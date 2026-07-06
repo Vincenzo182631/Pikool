@@ -4,6 +4,7 @@ import { verifyPassword } from "@/lib/auth/password";
 import { enforceRateLimit, clientIp } from "@/lib/rate-limit";
 import { createSession } from "@/lib/auth/session";
 import { logActivity } from "@/lib/activity";
+import { emailVerificationRequired } from "@/lib/email";
 import { loginSchema } from "@/lib/validation/auth";
 
 export const runtime = "nodejs";
@@ -29,7 +30,7 @@ export const POST = route(async (req: Request) => {
   const valid = await verifyPassword(input.password, user.passwordHash);
   if (!valid) throw invalid();
 
-  if (!user.emailVerified) {
+  if (emailVerificationRequired && !user.emailVerified) {
     throw new ApiError(
       "FORBIDDEN",
       "Please verify your email before signing in.",

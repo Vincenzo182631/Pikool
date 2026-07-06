@@ -2,8 +2,10 @@ import { db } from "@/lib/db";
 import { ApiError, ok, route } from "@/lib/api";
 import { hashPassword } from "@/lib/auth/password";
 import { generateOtp, hashOtp, OTP_TTL_MS } from "@/lib/auth/otp";
-import { sendEmail, otpEmail } from "@/lib/email";
+import { sendEmail, otpEmail, emailVerificationRequired } from "@/lib/email";
 import { enforceRateLimit, clientIp } from "@/lib/rate-limit";
+import { createSession } from "@/lib/auth/session";
+import { logActivity } from "@/lib/activity";
 import { signupSchema } from "@/lib/validation/auth";
 
 export const runtime = "nodejs";
@@ -27,6 +29,30 @@ export const POST = route(async (req: Request) => {
   }
 
   const passwordHash = await hashPassword(input.password);
+
+  // Instant signup: when no email provider is configured, activate the account
+  // immediately and log the user in (skip OTP). Adding RESEND_API_KEY flips this
+  // back to the real email-verification flow automatically.
+  if (!emailVerificationRequired) {
+    const user = await db.user.create({
+      data: {
+        email: input.email,
+        firstName: input.firstName,
+        lastName: input.lastName,
+        passwordHash,
+        emailVerified: new Date(),
+        settings: { create: {} },
+        roles: { create: { role: "PLAYER" } },
+      },
+    });
+    await createSession({ id: user.id, roles: ["PLAYER"], emailVerified: true });
+    await logActivity({ userId: user.id, type: "REGISTER" });
+    return ok(
+      { email: input.email, verified: true, onboarded: false },
+      { status: 201 },
+    );
+  }
+
   await db.user.create({
     data: {
       email: input.email,
@@ -60,6 +86,7 @@ export const POST = route(async (req: Request) => {
   return ok(
     {
       email: input.email,
+      verified: false,
       emailSent,
       message: emailSent
         ? "Verification code sent."

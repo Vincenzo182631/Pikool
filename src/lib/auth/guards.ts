@@ -1,11 +1,12 @@
 import { ApiError } from "@/lib/api";
 import { getCurrentUser, type CurrentUser } from "@/lib/auth/session";
+import { emailVerificationRequired } from "@/lib/email";
 
-/** Require an authenticated, email-verified user. Throws 401/403 otherwise. */
+/** Require an authenticated (and, when enforced, email-verified) user. */
 export async function requireUser(): Promise<CurrentUser> {
   const user = await getCurrentUser();
   if (!user) throw new ApiError("UNAUTHENTICATED", "You must be signed in.");
-  if (!user.emailVerified) {
+  if (emailVerificationRequired && !user.emailVerified) {
     throw new ApiError("FORBIDDEN", "Please verify your email to continue.");
   }
   return user;

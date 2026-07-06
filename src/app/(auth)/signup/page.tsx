@@ -51,9 +51,16 @@ export default function SignupPage() {
 
     setLoading(true);
     try {
-      await api.post("/api/auth/signup", parsed.data);
-      toast.success("Check your email for a verification code.");
-      router.push(`/verify?email=${encodeURIComponent(parsed.data.email)}`);
+      const res = await api.post<{ verified: boolean }>("/api/auth/signup", parsed.data);
+      if (res.verified) {
+        // Instant signup (no email provider): already logged in.
+        toast.success("Welcome to PicklePlay!");
+        router.push("/onboarding");
+        router.refresh();
+      } else {
+        toast.success("Check your email for a verification code.");
+        router.push(`/verify?email=${encodeURIComponent(parsed.data.email)}`);
+      }
     } catch (err) {
       const message =
         err instanceof ApiClientError ? err.message : "Something went wrong.";

@@ -1,5 +1,13 @@
 import { env } from "@/lib/env";
 
+/**
+ * Whether email verification is enforced. It's only meaningful when we can
+ * actually deliver email — so with no email provider configured, signups
+ * auto-verify (instant signup) and verification requirements are skipped.
+ * Configuring RESEND_API_KEY (see docs/17) automatically re-enables real OTP.
+ */
+export const emailVerificationRequired = Boolean(env.resendApiKey);
+
 interface SendEmailInput {
   to: string;
   subject: string;
