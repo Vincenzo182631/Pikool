@@ -51,6 +51,8 @@ export interface CourtDetail {
   address: string | null;
   city: string | null;
   country: string | null;
+  phone: string | null;
+  website: string | null;
   lat: number;
   lng: number;
   surface: string;

@@ -4,9 +4,11 @@ import { notFound } from "next/navigation";
 import {
   ArrowLeft,
   BadgeCheck,
+  Globe,
   Home,
   Lightbulb,
   MapPin,
+  Phone,
   Star,
   Sun,
   Users,
@@ -167,6 +169,34 @@ export default async function CourtDetailPage({
               )}
             </dl>
           </section>
+
+          {(court.phone || court.website) && (
+            <section className="rounded-2xl border border-border bg-card p-5 text-sm">
+              <h2 className="mb-3 font-semibold">Contact</h2>
+              <div className="space-y-2">
+                {court.phone && (
+                  <a
+                    href={`tel:${court.phone.replace(/\s+/g, "")}`}
+                    className="flex items-center gap-2 text-foreground hover:text-primary"
+                  >
+                    <Phone className="size-4 text-muted-foreground" />
+                    {court.phone}
+                  </a>
+                )}
+                {court.website && (
+                  <a
+                    href={court.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 break-all text-foreground hover:text-primary"
+                  >
+                    <Globe className="size-4 shrink-0 text-muted-foreground" />
+                    {court.website.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")}
+                  </a>
+                )}
+              </div>
+            </section>
+          )}
         </aside>
       </div>
     </div>

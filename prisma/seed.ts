@@ -65,19 +65,22 @@ async function main() {
 
   for (const c of PH_COURTS) {
     const existing = await db.court.findFirst({ where: { name: c.name } });
-    if (!existing) {
+    const data = {
+      lat: c.lat,
+      lng: c.lng,
+      address: c.address,
+      city: c.city,
+      country: c.country,
+      phone: c.phone,
+      website: c.website,
+      hasLighting: c.hasLighting,
+    };
+    if (existing) {
+      // Enrich already-seeded courts (e.g. add phone/website) without clobbering.
+      await db.court.update({ where: { id: existing.id }, data });
+    } else {
       await db.court.create({
-        data: {
-          name: c.name,
-          lat: c.lat,
-          lng: c.lng,
-          address: c.address,
-          city: c.city,
-          country: c.country,
-          hasLighting: c.hasLighting,
-          amenities: [],
-          verified: false, // crowd-sourced, pending admin review
-        },
+        data: { name: c.name, amenities: [], verified: false, ...data },
       });
     }
   }

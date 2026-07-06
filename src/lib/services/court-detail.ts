@@ -58,6 +58,8 @@ export async function getCourtDetail(
     address: court.address,
     city: court.city,
     country: court.country,
+    phone: court.phone,
+    website: court.website,
     lat: court.lat,
     lng: court.lng,
     surface: court.surface,

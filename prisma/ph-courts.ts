@@ -9,6 +9,8 @@ export interface SeedCourt {
   city: string;
   country: string;
   hasLighting: boolean;
+  phone: string | null;
+  website: string | null;
 }
 
 export const PH_COURTS: SeedCourt[] = [
@@ -20,6 +22,8 @@ export const PH_COURTS: SeedCourt[] = [
     city: "Ormoc City",
     country: "Philippines",
     hasLighting: false,
+    phone: "0999 883 1170",
+    website: "https://www.facebook.com/profile.php?id=61573153073914",
   },
   {
     name: "Ace Pickleball Hub",
@@ -29,6 +33,8 @@ export const PH_COURTS: SeedCourt[] = [
     city: "Ormoc City",
     country: "Philippines",
     hasLighting: false,
+    phone: "0917 688 8874",
+    website: null,
   },
   {
     name: "ServNdink Pickleball Court",
@@ -38,6 +44,8 @@ export const PH_COURTS: SeedCourt[] = [
     city: "Palompon",
     country: "Philippines",
     hasLighting: false,
+    phone: null,
+    website: null,
   },
   {
     name: "Waypoint Pickleball Court",
@@ -47,6 +55,8 @@ export const PH_COURTS: SeedCourt[] = [
     city: "Palompon",
     country: "Philippines",
     hasLighting: false,
+    phone: null,
+    website: "https://www.facebook.com/share/14Rk5HptvtG/",
   },
   {
     name: "Smash Zone",
@@ -56,6 +66,8 @@ export const PH_COURTS: SeedCourt[] = [
     city: "Tacloban City",
     country: "Philippines",
     hasLighting: false,
+    phone: "0956 316 6359",
+    website: "https://www.supersaas.com/schedule/SmashZoneTac/Pickleball",
   },
   {
     name: "Pampanga Pickleball Center",
@@ -65,6 +77,8 @@ export const PH_COURTS: SeedCourt[] = [
     city: "San Fernando",
     country: "Philippines",
     hasLighting: false,
+    phone: "0908 989 2323",
+    website: "https://pampanga-pickleball.rezerv.co/",
   },
   {
     name: "The Courtside Cebu",
@@ -74,6 +88,8 @@ export const PH_COURTS: SeedCourt[] = [
     city: "Talisay",
     country: "Philippines",
     hasLighting: false,
+    phone: "0930 392 0719",
+    website: "https://thecourtsidecebu.com/",
   },
   {
     name: "The Pickle Yard Parañaque",
@@ -83,6 +99,8 @@ export const PH_COURTS: SeedCourt[] = [
     city: "Parañaque",
     country: "Philippines",
     hasLighting: false,
+    phone: "0936 959 5004",
+    website: "https://www.facebook.com/profile.php?id=61567306075454",
   },
   {
     name: "24/7 Pickle Mandaluyong",
@@ -92,6 +110,8 @@ export const PH_COURTS: SeedCourt[] = [
     city: "Mandaluyong City",
     country: "Philippines",
     hasLighting: true,
+    phone: "0936 949 0815",
+    website: "https://reclub.co/clubs/@24-7-pickle-mandaluyong",
   },
   {
     name: "Neopolitan Brittany Pickleball Courts",
@@ -101,6 +121,8 @@ export const PH_COURTS: SeedCourt[] = [
     city: "Quezon City",
     country: "Philippines",
     hasLighting: true,
+    phone: "(02) 8461 3534",
+    website: null,
   },
   {
     name: "Pickle Play",
@@ -110,6 +132,8 @@ export const PH_COURTS: SeedCourt[] = [
     city: "Amadeo",
     country: "Philippines",
     hasLighting: false,
+    phone: "0927 355 8909",
+    website: "https://facebook.com/pickleplayph",
   },
   {
     name: "Tierra Pickleball Club",
@@ -119,6 +143,8 @@ export const PH_COURTS: SeedCourt[] = [
     city: "Quezon City",
     country: "Philippines",
     hasLighting: false,
+    phone: "0969 085 7204",
+    website: "https://www.facebook.com/tierrapickleball",
   },
   {
     name: "Pickleball Central PH",
@@ -128,6 +154,8 @@ export const PH_COURTS: SeedCourt[] = [
     city: "Angeles",
     country: "Philippines",
     hasLighting: false,
+    phone: "0908 891 1206",
+    website: null,
   },
   {
     name: "Zone Sports Center",
@@ -137,6 +165,8 @@ export const PH_COURTS: SeedCourt[] = [
     city: "Makati City",
     country: "Philippines",
     hasLighting: false,
+    phone: "0945 204 3013",
+    website: "https://bit.ly/thezoneph",
   },
   {
     name: "PEDCI Pickleball Courts",
@@ -146,6 +176,8 @@ export const PH_COURTS: SeedCourt[] = [
     city: "Cainta",
     country: "Philippines",
     hasLighting: true,
+    phone: "0927 450 5978",
+    website: "https://www.facebook.com/share/N1DMpYRhsNCpR55G/",
   },
   {
     name: "PickleballHub",
@@ -155,6 +187,8 @@ export const PH_COURTS: SeedCourt[] = [
     city: "Muntinlupa",
     country: "Philippines",
     hasLighting: false,
+    phone: "0968 207 8876",
+    website: "https://pickleballhubph.playbypoint.com/",
   },
   {
     name: "Davao Pickleball Court (Matina Town Square)",
@@ -164,6 +198,8 @@ export const PH_COURTS: SeedCourt[] = [
     city: "Davao City",
     country: "Philippines",
     hasLighting: false,
+    phone: "(082) 297 1780",
+    website: "https://jfmdevelopmentcorp.com/pickleball",
   },
   {
     name: "Manila Pickleball Club (MPC)",
@@ -173,6 +209,8 @@ export const PH_COURTS: SeedCourt[] = [
     city: "Manila",
     country: "Philippines",
     hasLighting: false,
+    phone: null,
+    website: "https://www.facebook.com/share/g/12BufEeWdwP/",
   },
   {
     name: "Powerhouse Pickleball and Badminton Center",
@@ -182,5 +220,7 @@ export const PH_COURTS: SeedCourt[] = [
     city: "Silang",
     country: "Philippines",
     hasLighting: true,
+    phone: "0916 634 7024",
+    website: "https://www.facebook.com/share/1BosxYBzoS/",
   },
 ];

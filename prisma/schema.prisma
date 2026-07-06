@@ -348,6 +348,8 @@ model Court {
   address          String?
   city             String?
   country          String?
+  phone            String?
+  website          String?
   surface          CourtSurface     @default(ACRYLIC)
   environment      CourtEnvironment @default(OUTDOOR)
   hasLighting      Boolean          @default(false)
