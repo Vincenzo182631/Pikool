@@ -37,4 +37,38 @@ export const env = {
   upstashRedisToken: process.env.UPSTASH_REDIS_REST_TOKEN ?? "",
 
   googleMapsBrowserKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_BROWSER_KEY ?? "",
+
+  cloudinaryCloudName: process.env.CLOUDINARY_CLOUD_NAME ?? "",
+  cloudinaryApiKey: process.env.CLOUDINARY_API_KEY ?? "",
+  cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET ?? "",
 } as const;
+
+/**
+ * Validate that production has the secrets it needs. Called once at server
+ * startup (see instrumentation.ts) — logs actionable warnings rather than
+ * crashing the process, so a misconfigured deploy is loud but recoverable.
+ */
+export function validateEnv() {
+  if (!env.isProd) return;
+  const requiredInProd: Array<[string, string]> = [
+    ["DATABASE_URL", env.databaseUrl],
+    ["JWT_ACCESS_SECRET", process.env.JWT_ACCESS_SECRET ?? ""],
+    ["JWT_REFRESH_SECRET", process.env.JWT_REFRESH_SECRET ?? ""],
+  ];
+  const missing = requiredInProd.filter(([, v]) => !v).map(([k]) => k);
+  if (missing.length) {
+    console.error(`[env] Missing required production env vars: ${missing.join(", ")}`);
+  }
+  for (const [name, value] of [
+    ["JWT_ACCESS_SECRET", process.env.JWT_ACCESS_SECRET ?? ""],
+    ["JWT_REFRESH_SECRET", process.env.JWT_REFRESH_SECRET ?? ""],
+  ] as const) {
+    if (value && value.length < 32) {
+      console.warn(`[env] ${name} should be at least 32 characters for security.`);
+    }
+  }
+}
+
+export const isCloudinaryConfigured = Boolean(
+  env.cloudinaryCloudName && env.cloudinaryApiKey && env.cloudinaryApiSecret,
+);

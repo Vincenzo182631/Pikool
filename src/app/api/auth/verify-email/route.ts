@@ -3,6 +3,7 @@ import { ApiError, ok, route } from "@/lib/api";
 import { hashOtp } from "@/lib/auth/otp";
 import { enforceRateLimit, clientIp } from "@/lib/rate-limit";
 import { createSession } from "@/lib/auth/session";
+import { logActivity } from "@/lib/activity";
 import { verifyEmailSchema } from "@/lib/validation/auth";
 
 export const runtime = "nodejs";
@@ -57,6 +58,11 @@ export const POST = route(async (req: Request) => {
     roles: user.roles.length ? user.roles.map((r) => r.role) : ["PLAYER"],
     emailVerified: true,
   });
+
+  await logActivity({ userId: user.id, type: "EMAIL_VERIFIED" });
+  if (!user.emailVerified) {
+    await logActivity({ userId: user.id, type: "REGISTER" });
+  }
 
   const hasProfile = Boolean(
     await db.profile.findUnique({ where: { userId: user.id }, select: { id: true } }),

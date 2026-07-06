@@ -2,29 +2,9 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/api-client";
+import type { Me } from "@/types/user";
 
-export interface MeProfile {
-  username: string;
-  firstName: string;
-  lastName: string;
-  avatarUrl: string | null;
-  skillLevel: string;
-  ratingValue: number;
-  city: string | null;
-  country: string | null;
-  gamesPlayed: number;
-  wins: number;
-  losses: number;
-  currentStreak: number;
-}
-
-export interface Me {
-  id: string;
-  email: string;
-  emailVerified: boolean;
-  roles: string[];
-  profile: MeProfile | null;
-}
+export type { Me } from "@/types/user";
 
 export function useMe() {
   return useQuery({

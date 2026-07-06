@@ -10,11 +10,22 @@ import { Field } from "@/components/ui/field";
 import { api, ApiClientError } from "@/lib/api-client";
 import { signupSchema } from "@/lib/validation/auth";
 
-type Errors = Partial<Record<"email" | "password" | "confirmPassword" | "acceptedTerms", string>>;
+type Errors = Partial<
+  Record<
+    "firstName" | "lastName" | "email" | "password" | "confirmPassword" | "acceptedTerms",
+    string
+  >
+>;
 
 export default function SignupPage() {
   const router = useRouter();
-  const [form, setForm] = React.useState({ email: "", password: "", confirmPassword: "" });
+  const [form, setForm] = React.useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
   const [accepted, setAccepted] = React.useState(false);
   const [errors, setErrors] = React.useState<Errors>({});
   const [loading, setLoading] = React.useState(false);
@@ -60,6 +71,24 @@ export default function SignupPage() {
       </CardHeader>
       <CardContent>
         <form onSubmit={onSubmit} className="space-y-4" noValidate>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Field
+              label="First name"
+              name="firstName"
+              autoComplete="given-name"
+              value={form.firstName}
+              onChange={set("firstName")}
+              error={errors.firstName}
+            />
+            <Field
+              label="Last name"
+              name="lastName"
+              autoComplete="family-name"
+              value={form.lastName}
+              onChange={set("lastName")}
+              error={errors.lastName}
+            />
+          </div>
           <Field
             label="Email"
             name="email"

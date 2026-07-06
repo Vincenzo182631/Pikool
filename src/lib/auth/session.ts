@@ -26,11 +26,16 @@ const baseCookie = {
 };
 
 /** Create a new session + set access/refresh cookies. Returns the tokens. */
-export async function createSession(user: {
-  id: string;
-  roles: string[];
-  emailVerified: boolean;
-}) {
+export async function createSession(
+  user: {
+    id: string;
+    roles: string[];
+    emailVerified: boolean;
+  },
+  opts: { remember?: boolean } = {},
+) {
+  // "Remember me": persistent 30-day cookie vs. a short-lived 1-day cookie.
+  const refreshMaxAge = opts.remember === false ? 60 * 60 * 24 : REFRESH_TTL_SECONDS;
   const hdrs = await headers();
   const session = await db.session.create({
     data: {
@@ -59,7 +64,7 @@ export async function createSession(user: {
 
   const jar = await cookies();
   jar.set(ACCESS_COOKIE, accessToken, { ...baseCookie, maxAge: ACCESS_MAX_AGE });
-  jar.set(REFRESH_COOKIE, refreshToken, { ...baseCookie, maxAge: REFRESH_TTL_SECONDS });
+  jar.set(REFRESH_COOKIE, refreshToken, { ...baseCookie, maxAge: refreshMaxAge });
 
   return { accessToken, refreshToken };
 }
@@ -145,7 +150,7 @@ export async function getCurrentUser() {
 
   const user = await db.user.findUnique({
     where: { id: claims.sub },
-    include: { profile: true, roles: true },
+    include: { profile: true, settings: true, roles: true },
   });
   if (!user || user.deletedAt) return null;
   return user;

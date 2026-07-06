@@ -9,6 +9,8 @@ export const passwordSchema = z
 
 export const signupSchema = z
   .object({
+    firstName: z.string().min(1, "Enter your first name").max(50),
+    lastName: z.string().min(1, "Enter your last name").max(50),
     email: z.email("Enter a valid email").toLowerCase(),
     password: passwordSchema,
     confirmPassword: z.string(),

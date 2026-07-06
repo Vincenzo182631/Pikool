@@ -132,16 +132,21 @@ enum PlaceType {
 model User {
   id            String    @id @default(cuid())
   email         String    @unique
+  firstName     String?
+  lastName      String?
   passwordHash  String?
   emailVerified DateTime?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   deletedAt     DateTime?
 
-  profile  Profile?
-  roles    UserRole[]
-  accounts Account[]
-  sessions Session[]
+  profile      Profile?
+  settings     UserSettings?
+  roles        UserRole[]
+  accounts     Account[]
+  sessions     Session[]
+  badges       UserBadge[]
+  activityLogs ActivityLog[]
 
   posts         Post[]
   comments      Comment[]
@@ -173,14 +178,14 @@ model Profile {
   id             String       @id @default(cuid())
   userId         String       @unique
   user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  firstName      String
-  lastName       String
   username       String       @unique
+  displayName    String?
   avatarUrl      String?
   coverUrl       String?
   bio            String?
   city           String?
   country        String?
+  availability   String[]
   skillLevel     SkillLevel   @default(L2_5)
   ratingValue    Float        @default(2.5)
   dominantHand   DominantHand @default(RIGHT)
@@ -683,4 +688,90 @@ model Notification {
   createdAt DateTime         @default(now())
 
   @@index([userId, readAt])
+}
+
+// ---------- User settings ----------
+enum ProfileVisibility {
+  PUBLIC
+  FOLLOWERS
+  PRIVATE
+}
+
+enum ThemePreference {
+  LIGHT
+  DARK
+  SYSTEM
+}
+
+model UserSettings {
+  id                 String            @id @default(cuid())
+  userId             String            @unique
+  user               User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  theme              ThemePreference   @default(SYSTEM)
+  emailNotifications Boolean           @default(true)
+  pushNotifications  Boolean           @default(true)
+  marketingEmails    Boolean           @default(false)
+  profileVisibility  ProfileVisibility @default(PUBLIC)
+  showLocation       Boolean           @default(true)
+  showStats          Boolean           @default(true)
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+}
+
+// ---------- Badges (visual awards, distinct from milestone Achievements) ----------
+enum BadgeTier {
+  BRONZE
+  SILVER
+  GOLD
+  PLATINUM
+}
+
+model Badge {
+  id          String      @id @default(cuid())
+  key         String      @unique
+  name        String
+  description String
+  iconUrl     String?
+  tier        BadgeTier   @default(BRONZE)
+  users       UserBadge[]
+}
+
+model UserBadge {
+  id        String   @id @default(cuid())
+  userId    String
+  badgeId   String
+  awardedAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  badge     Badge    @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, badgeId])
+  @@index([userId])
+}
+
+// ---------- Activity log (audit + "recent activity") ----------
+enum ActivityType {
+  REGISTER
+  LOGIN
+  LOGOUT
+  EMAIL_VERIFIED
+  PROFILE_UPDATED
+  PASSWORD_CHANGED
+  EMAIL_CHANGED
+  SETTINGS_UPDATED
+  ROLE_GRANTED
+  ACCOUNT_DELETED
+}
+
+model ActivityLog {
+  id        String       @id @default(cuid())
+  userId    String
+  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      ActivityType
+  message   String?
+  ip        String?
+  userAgent String?
+  meta      Json?
+  createdAt DateTime     @default(now())
+
+  @@index([userId, createdAt])
 }

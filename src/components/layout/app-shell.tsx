@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Bell, LogOut, Search } from "lucide-react";
+import { Bell, LogOut, Search, Settings } from "lucide-react";
 import { NAV_ITEMS, APP_NAME } from "@/lib/constants";
 import { cn, initials } from "@/lib/utils";
 import { useMe, useLogout, type Me } from "@/hooks/use-auth";
@@ -28,9 +28,10 @@ export function AppShell({
     if (isError && !initialUser) router.replace("/login");
   }, [isError, initialUser, router]);
 
-  const name = user?.profile
-    ? `${user.profile.firstName} ${user.profile.lastName}`
-    : (user?.email ?? "");
+  const name =
+    user?.firstName || user?.lastName
+      ? `${user?.firstName ?? ""} ${user?.lastName ?? ""}`.trim()
+      : (user?.email ?? "");
 
   return (
     <div className="min-h-dvh md:grid md:grid-cols-[240px_1fr]">
@@ -65,10 +66,13 @@ export function AppShell({
           })}
         </nav>
         <div className="border-t border-border p-3">
-          <div className="flex items-center gap-3 rounded-lg px-2 py-1.5">
+          <Link
+            href="/settings"
+            className="flex items-center gap-3 rounded-lg px-2 py-1.5 transition-colors hover:bg-secondary"
+          >
             <Avatar
               src={user?.profile?.avatarUrl}
-              fallback={initials(user?.profile?.firstName, user?.profile?.lastName)}
+              fallback={initials(user?.firstName, user?.lastName)}
               size={36}
             />
             <div className="min-w-0 flex-1">
@@ -77,7 +81,8 @@ export function AppShell({
                 {user?.profile ? `@${user.profile.username}` : user?.email}
               </p>
             </div>
-          </div>
+            <Settings className="size-4 text-muted-foreground" />
+          </Link>
         </div>
       </aside>
 

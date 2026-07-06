@@ -3,6 +3,7 @@ import { ApiError, ok, route } from "@/lib/api";
 import { verifyPassword } from "@/lib/auth/password";
 import { enforceRateLimit, clientIp } from "@/lib/rate-limit";
 import { createSession } from "@/lib/auth/session";
+import { logActivity } from "@/lib/activity";
 import { loginSchema } from "@/lib/validation/auth";
 
 export const runtime = "nodejs";
@@ -36,11 +37,16 @@ export const POST = route(async (req: Request) => {
     );
   }
 
-  await createSession({
-    id: user.id,
-    roles: user.roles.map((r) => r.role),
-    emailVerified: true,
-  });
+  await createSession(
+    {
+      id: user.id,
+      roles: user.roles.map((r) => r.role),
+      emailVerified: true,
+    },
+    { remember: input.remember ?? true },
+  );
+
+  await logActivity({ userId: user.id, type: "LOGIN" });
 
   return ok({ onboarded: Boolean(user.profile) });
 });

@@ -1,10 +1,15 @@
+import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
-import { CalendarClock, Hand, MapPin, Star } from "lucide-react";
+import { CalendarClock, Hand, MapPin, Star, UserPen } from "lucide-react";
 import { db } from "@/lib/db";
+import { getCurrentUser } from "@/lib/auth/session";
 import { Avatar } from "@/components/ui/avatar";
 import { RatingBadge } from "@/components/ui/rating-badge";
 import { StatTile } from "@/components/ui/stat-tile";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { FollowButton, ShareButton } from "@/components/profile/profile-actions";
 import { initials } from "@/lib/utils";
 import { SKILL_META } from "@/lib/constants";
 
@@ -16,45 +21,88 @@ export default async function PlayerPage({
   params: Promise<{ username: string }>;
 }) {
   const { username } = await params;
-  const profile = await db.profile.findUnique({ where: { username } });
+  const profile = await db.profile.findUnique({
+    where: { username },
+    include: {
+      user: {
+        include: {
+          settings: true,
+          badges: { include: { badge: true }, orderBy: { awardedAt: "desc" } },
+        },
+      },
+    },
+  });
   if (!profile) notFound();
 
+  const viewer = await getCurrentUser();
+  const isOwner = viewer?.id === profile.userId;
+  const settings = profile.user.settings;
+  const showStats = isOwner || settings?.showStats !== false;
+  const showLocation = isOwner || settings?.showLocation !== false;
+
+  const fullName = [profile.user.firstName, profile.user.lastName].filter(Boolean).join(" ");
   const winPct =
     profile.gamesPlayed > 0 ? Math.round((profile.wins / profile.gamesPlayed) * 100) : 0;
   const hand = profile.dominantHand.charAt(0) + profile.dominantHand.slice(1).toLowerCase();
+  const memberSince = profile.user.createdAt.toLocaleDateString(undefined, {
+    month: "long",
+    year: "numeric",
+  });
 
   return (
     <div className="mx-auto max-w-3xl">
-      {/* Cover + identity */}
       <div className="overflow-hidden rounded-2xl border border-border bg-card">
-        <div
-          className="h-32 w-full sm:h-40"
-          style={{
-            background:
-              "linear-gradient(120deg, color-mix(in srgb, var(--brand-500) 55%, transparent), color-mix(in srgb, var(--brand-700) 65%, transparent))",
-          }}
-        />
-        <div className="px-5 pb-5">
-          <div className="-mt-10 flex items-end gap-4">
-            <Avatar
-              src={profile.avatarUrl}
-              fallback={initials(profile.firstName, profile.lastName)}
-              size={88}
-              className="ring-4 ring-card"
+        {/* Cover */}
+        <div className="relative h-32 w-full sm:h-44">
+          {profile.coverUrl ? (
+            <Image src={profile.coverUrl} alt="" fill className="object-cover" sizes="768px" />
+          ) : (
+            <div
+              className="h-full w-full"
+              style={{
+                background:
+                  "linear-gradient(120deg, color-mix(in srgb, var(--brand-500) 55%, transparent), color-mix(in srgb, var(--brand-700) 65%, transparent))",
+              }}
             />
-            <div className="flex-1 pb-1">
-              <div className="flex flex-wrap items-center gap-2">
-                <h1 className="text-xl font-bold tracking-tight">
-                  {profile.firstName} {profile.lastName}
-                </h1>
-                <RatingBadge level={profile.skillLevel} />
-              </div>
-              <p className="text-sm text-muted-foreground">@{profile.username}</p>
+          )}
+        </div>
+
+        <div className="px-5 pb-5">
+          <div className="-mt-10 flex items-end justify-between gap-4">
+            <div className="flex items-end gap-4">
+              <Avatar
+                src={profile.avatarUrl}
+                fallback={initials(profile.user.firstName, profile.user.lastName)}
+                size={88}
+                className="ring-4 ring-card"
+              />
+            </div>
+            <div className="flex gap-2 pb-1">
+              {isOwner ? (
+                <Button asChild variant="outline" size="sm">
+                  <Link href="/profile/edit">
+                    <UserPen /> Edit profile
+                  </Link>
+                </Button>
+              ) : (
+                <FollowButton username={profile.username} />
+              )}
+              <ShareButton username={profile.username} />
             </div>
           </div>
 
+          <div className="mt-3">
+            <div className="flex flex-wrap items-center gap-2">
+              <h1 className="text-xl font-bold tracking-tight">
+                {profile.displayName || fullName || `@${profile.username}`}
+              </h1>
+              <RatingBadge level={profile.skillLevel} />
+            </div>
+            <p className="text-sm text-muted-foreground">@{profile.username}</p>
+          </div>
+
           <div className="mt-4 flex flex-wrap gap-4 text-sm text-muted-foreground">
-            {(profile.city || profile.country) && (
+            {showLocation && (profile.city || profile.country) && (
               <span className="inline-flex items-center gap-1.5">
                 <MapPin className="size-4" />
                 {[profile.city, profile.country].filter(Boolean).join(", ")}
@@ -74,6 +122,7 @@ export default async function PlayerPage({
                 {profile.favoritePaddle}
               </span>
             )}
+            <span>Member since {memberSince}</span>
           </div>
 
           {profile.formats.length > 0 && (
@@ -89,11 +138,36 @@ export default async function PlayerPage({
       </div>
 
       {/* Stats */}
-      <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <StatTile label="Rating" value={profile.ratingValue.toFixed(1)} hint={SKILL_META[profile.skillLevel]?.label} />
-        <StatTile label="Games" value={profile.gamesPlayed} />
-        <StatTile label="Record" value={`${profile.wins}-${profile.losses}`} hint={`${winPct}% wins`} />
-        <StatTile label="Best streak" value={profile.longestStreak} hint={`current ${profile.currentStreak}`} />
+      {showStats && (
+        <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <StatTile label="Rating" value={profile.ratingValue.toFixed(1)} hint={SKILL_META[profile.skillLevel]?.label} />
+          <StatTile label="Games" value={profile.gamesPlayed} />
+          <StatTile label="Record" value={`${profile.wins}-${profile.losses}`} hint={`${winPct}% wins`} />
+          <StatTile label="Best streak" value={profile.longestStreak} hint={`current ${profile.currentStreak}`} />
+        </div>
+      )}
+
+      {/* Badges */}
+      <div className="mt-4 rounded-2xl border border-border bg-card p-5">
+        <h2 className="mb-3 text-sm font-semibold">Badges &amp; achievements</h2>
+        {profile.user.badges.length === 0 ? (
+          <p className="text-sm text-muted-foreground">
+            No badges yet — play matches and check in to courts to earn them.
+          </p>
+        ) : (
+          <div className="flex flex-wrap gap-3">
+            {profile.user.badges.map((ub) => (
+              <div
+                key={ub.id}
+                className="flex items-center gap-2 rounded-xl border border-border bg-secondary/50 px-3 py-2"
+                title={ub.badge.description}
+              >
+                <span className="text-lg">{tierEmoji(ub.badge.tier)}</span>
+                <span className="text-sm font-medium">{ub.badge.name}</span>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {profile.bio && (
@@ -104,4 +178,8 @@ export default async function PlayerPage({
       )}
     </div>
   );
+}
+
+function tierEmoji(tier: string) {
+  return { BRONZE: "🥉", SILVER: "🥈", GOLD: "🥇", PLATINUM: "💎" }[tier] ?? "🏅";
 }

@@ -1,45 +1,24 @@
 import { db } from "@/lib/db";
 import { ApiError, ok, route } from "@/lib/api";
 import { requireUser } from "@/lib/auth/guards";
+import { logActivity } from "@/lib/activity";
 import { updateProfileSchema } from "@/lib/validation/user";
+import { getFullUser, serializeMe, skillMidpoint } from "@/lib/services/user";
 
 export const runtime = "nodejs";
 
-function serialize(user: Awaited<ReturnType<typeof requireUser>>) {
-  return {
-    id: user.id,
-    email: user.email,
-    emailVerified: Boolean(user.emailVerified),
-    roles: user.roles.map((r) => r.role),
-    profile: user.profile
-      ? {
-          username: user.profile.username,
-          firstName: user.profile.firstName,
-          lastName: user.profile.lastName,
-          avatarUrl: user.profile.avatarUrl,
-          skillLevel: user.profile.skillLevel,
-          ratingValue: user.profile.ratingValue,
-          city: user.profile.city,
-          country: user.profile.country,
-          gamesPlayed: user.profile.gamesPlayed,
-          wins: user.profile.wins,
-          losses: user.profile.losses,
-          currentStreak: user.profile.currentStreak,
-        }
-      : null,
-  };
-}
-
 export const GET = route(async () => {
   const user = await requireUser();
-  return ok(serialize(user));
+  const full = await getFullUser(user.id);
+  if (!full) throw new ApiError("NOT_FOUND", "User not found.");
+  return ok(serializeMe(full));
 });
 
 export const PATCH = route(async (req: Request) => {
   const user = await requireUser();
   const input = updateProfileSchema.parse(await req.json());
 
-  // Username uniqueness (when provided and changed).
+  // Username uniqueness (when provided).
   if (input.username) {
     const taken = await db.profile.findFirst({
       where: { username: input.username, NOT: { userId: user.id } },
@@ -48,12 +27,36 @@ export const PATCH = route(async (req: Request) => {
     if (taken) throw new ApiError("CONFLICT", "That username is taken.");
   }
 
-  const existing = user.profile;
-  if (!existing) {
+  // Optionally update the account's real name (edit profile).
+  if (input.firstName || input.lastName) {
+    await db.user.update({
+      where: { id: user.id },
+      data: {
+        firstName: input.firstName ?? undefined,
+        lastName: input.lastName ?? undefined,
+      },
+    });
+  }
+
+  const profileData = {
+    displayName: input.displayName,
+    avatarUrl: input.avatarUrl,
+    coverUrl: input.coverUrl,
+    bio: input.bio,
+    city: input.city,
+    country: input.country,
+    skillLevel: input.skillLevel,
+    dominantHand: input.dominantHand,
+    playingStyle: input.playingStyle,
+    yearsPlaying: input.yearsPlaying,
+    favoritePaddle: input.favoritePaddle,
+    formats: input.formats,
+    availability: input.availability,
+  };
+
+  if (!user.profile) {
     // Creating the profile requires the core onboarding fields.
     if (
-      !input.firstName ||
-      !input.lastName ||
       !input.username ||
       !input.skillLevel ||
       !input.dominantHand ||
@@ -65,60 +68,21 @@ export const PATCH = route(async (req: Request) => {
     await db.profile.create({
       data: {
         userId: user.id,
-        firstName: input.firstName,
-        lastName: input.lastName,
         username: input.username,
-        city: input.city,
-        country: input.country,
-        skillLevel: input.skillLevel,
         ratingValue: skillMidpoint(input.skillLevel),
-        dominantHand: input.dominantHand,
-        playingStyle: input.playingStyle,
-        yearsPlaying: input.yearsPlaying,
-        favoritePaddle: input.favoritePaddle,
+        ...profileData,
         formats: input.formats,
-        bio: input.bio,
-        avatarUrl: input.avatarUrl,
-        coverUrl: input.coverUrl,
       },
     });
   } else {
     await db.profile.update({
       where: { userId: user.id },
-      data: {
-        firstName: input.firstName,
-        lastName: input.lastName,
-        username: input.username,
-        city: input.city,
-        country: input.country,
-        skillLevel: input.skillLevel,
-        dominantHand: input.dominantHand,
-        playingStyle: input.playingStyle,
-        yearsPlaying: input.yearsPlaying,
-        favoritePaddle: input.favoritePaddle,
-        formats: input.formats,
-        bio: input.bio,
-        avatarUrl: input.avatarUrl,
-        coverUrl: input.coverUrl,
-      },
+      data: { ...profileData, username: input.username },
     });
   }
 
-  const fresh = await requireUser();
-  return ok(serialize(fresh));
-});
+  await logActivity({ userId: user.id, type: "PROFILE_UPDATED" });
 
-/** Map a skill level to the midpoint of its rating band (see docs/12). */
-function skillMidpoint(level: string): number {
-  const map: Record<string, number> = {
-    L2_0: 2.1,
-    L2_5: 2.5,
-    L3_0: 3.0,
-    L3_5: 3.5,
-    L4_0: 4.0,
-    L4_5: 4.5,
-    L5_0: 5.0,
-    L5_5: 5.4,
-  };
-  return map[level] ?? 2.5;
-}
+  const fresh = await getFullUser(user.id);
+  return ok(serializeMe(fresh!));
+});

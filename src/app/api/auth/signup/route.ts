@@ -27,7 +27,15 @@ export const POST = route(async (req: Request) => {
   }
 
   const passwordHash = await hashPassword(input.password);
-  await db.user.create({ data: { email: input.email, passwordHash } });
+  await db.user.create({
+    data: {
+      email: input.email,
+      firstName: input.firstName,
+      lastName: input.lastName,
+      passwordHash,
+      settings: { create: {} },
+    },
+  });
 
   // Issue an OTP for email verification.
   const code = generateOtp();

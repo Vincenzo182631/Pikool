@@ -16,6 +16,7 @@ const PROTECTED_PREFIXES = [
   "/clubs",
   "/marketplace",
   "/onboarding",
+  "/profile",
   "/settings",
   "/admin",
 ];
@@ -53,6 +54,7 @@ export const config = {
     "/clubs/:path*",
     "/marketplace/:path*",
     "/onboarding/:path*",
+    "/profile/:path*",
     "/settings/:path*",
     "/admin/:path*",
   ],

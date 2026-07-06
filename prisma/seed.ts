@@ -24,12 +24,27 @@ const COURTS = [
   { name: "Lakeshore Athletic Club", lat: 41.8781, lng: -87.6298, city: "Chicago", country: "USA", hasLighting: true },
 ];
 
+const BADGES = [
+  { key: "founder", name: "Founding Member", description: "Joined during early access.", tier: "GOLD" as const },
+  { key: "verified", name: "Verified", description: "Verified their email and profile.", tier: "SILVER" as const },
+  { key: "first_win", name: "First Win", description: "Won a match.", tier: "BRONZE" as const },
+  { key: "streak_master", name: "Streak Master", description: "Won 10 in a row.", tier: "PLATINUM" as const },
+];
+
 async function main() {
   for (const a of ACHIEVEMENTS) {
     await db.achievement.upsert({
       where: { key: a.key },
       update: { name: a.name, description: a.description },
       create: a,
+    });
+  }
+
+  for (const b of BADGES) {
+    await db.badge.upsert({
+      where: { key: b.key },
+      update: { name: b.name, description: b.description, tier: b.tier },
+      create: b,
     });
   }
 
@@ -42,7 +57,9 @@ async function main() {
     }
   }
 
-  console.log(`Seeded ${ACHIEVEMENTS.length} achievements and ${COURTS.length} courts.`);
+  console.log(
+    `Seeded ${ACHIEVEMENTS.length} achievements, ${BADGES.length} badges and ${COURTS.length} courts.`,
+  );
 }
 
 main()
