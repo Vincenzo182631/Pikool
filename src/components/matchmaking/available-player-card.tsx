@@ -70,7 +70,7 @@ export function AvailablePlayerCard({ player }: { player: AvailablePlayer }) {
             <Link href="#requests">Respond</Link>
           </Button>
         ) : (
-          <Button size="sm" onClick={onInvite} loading={invite.isPending}>
+          <Button size="sm" variant="cta" onClick={onInvite} loading={invite.isPending}>
             <Send /> Invite
           </Button>
         )}

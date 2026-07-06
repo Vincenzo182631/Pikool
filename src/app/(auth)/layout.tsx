@@ -4,18 +4,16 @@ import { APP_NAME, APP_TAGLINE } from "@/lib/constants";
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="relative flex min-h-dvh flex-col">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10"
-        style={{
-          background:
-            "radial-gradient(50rem 25rem at 50% -5%, color-mix(in srgb, var(--brand-500) 16%, transparent), transparent)",
-        }}
-      />
+    <div className="relative flex min-h-dvh flex-col overflow-hidden">
+      {/* Energetic floating gradient blobs */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+        <span className="blob blob-float left-[-6rem] top-[-4rem] size-72" style={{ background: "var(--royal)" }} />
+        <span className="blob blob-float right-[-5rem] top-10 size-64" style={{ background: "var(--coral)", animationDelay: "1.5s" }} />
+        <span className="blob blob-float bottom-[-6rem] left-1/3 size-80" style={{ background: "var(--cyan)", animationDelay: "3s" }} />
+      </div>
       <header className="flex items-center justify-between px-5 py-5">
         <Link href="/" className="flex items-center gap-2">
-          <span className="inline-flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+          <span className="inline-flex size-8 items-center justify-center rounded-2xl grad-primary text-white clay-sm">
             <span className="text-sm font-black">P</span>
           </span>
           <span className="text-lg font-bold tracking-tight">{APP_NAME}</span>

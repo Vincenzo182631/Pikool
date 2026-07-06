@@ -44,20 +44,18 @@ export default function LandingPage() {
       <main>
         {/* Hero */}
         <section className="relative overflow-hidden">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 -z-10 opacity-70"
-            style={{
-              background:
-                "radial-gradient(60rem 30rem at 50% -10%, color-mix(in srgb, var(--brand-500) 22%, transparent), transparent)",
-            }}
-          />
+          <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+            <span className="blob blob-float left-[8%] top-[-3rem] size-72" style={{ background: "var(--royal)" }} />
+            <span className="blob blob-float right-[6%] top-6 size-64" style={{ background: "var(--coral)", animationDelay: "1.2s" }} />
+            <span className="blob blob-float bottom-[-4rem] left-[42%] size-72" style={{ background: "var(--cyan)", animationDelay: "2.6s" }} />
+            <span className="blob blob-float right-[24%] top-[18rem] size-48" style={{ background: "var(--sunset)", animationDelay: "3.8s" }} />
+          </div>
           <div className="mx-auto max-w-4xl px-5 pb-16 pt-14 text-center sm:pt-20">
             <Badge variant="accent" className="mb-5">
               🎾 Now in early access
             </Badge>
             <h1 className="text-balance text-4xl font-extrabold tracking-tight sm:text-6xl">
-              {APP_TAGLINE}
+              <span className="text-gradient">{APP_TAGLINE}</span>
             </h1>
             <p className="mx-auto mt-5 max-w-2xl text-balance text-lg text-muted-foreground">
               {APP_NAME} is the all-in-one home for pickleball — discover courts,
@@ -127,7 +125,7 @@ export default function LandingPage() {
 
 function Logo() {
   return (
-    <span className="inline-flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+    <span className="inline-flex size-8 items-center justify-center rounded-2xl grad-primary text-white clay-sm">
       <span className="text-sm font-black">P</span>
     </span>
   );

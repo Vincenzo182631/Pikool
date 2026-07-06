@@ -7,65 +7,97 @@
   /* Chunky, tactile radius — the clay look leans on generous rounding. */
   --radius: 1.5rem;
 
-  /* Brand — pickleball-court green */
-  --brand-50: #ecfdf3;
-  --brand-100: #d1fadf;
-  --brand-300: #6ce9a6;
-  --brand-500: #12b76a;
-  --brand-600: #039855;
-  --brand-700: #027a48;
+  /* Brand — royal purple → electric violet, energetic & premium. */
+  --brand-50: #f1ecff;
+  --brand-100: #e4d9ff;
+  --brand-300: #b79bff;
+  --brand-500: #6c3dff;
+  --brand-600: #5b28e0;
+  --brand-700: #3b1e8f;
 
-  /* Light theme — soft tinted canvas so puffy cards lift off the surface. */
-  --background: #e7ecf1;
-  --foreground: #0c111d;
+  /* Sport palette — used for gradients, CTAs and accents. */
+  --indigo: #3b1e8f;
+  --royal: #6c3dff;
+  --violet: #8e5cff;
+  --coral: #ff6f91;
+  --peach: #ffb199;
+  --sunset: #ffc66d;
+  --cyan: #6ef3ff;
+  --lime: #9be564;
+  --tennis: #d9ff4a;
+
+  /* Brand gradients. */
+  --grad-primary: linear-gradient(135deg, #6c3dff 0%, #8e5cff 100%);
+  --grad-cta: linear-gradient(135deg, #ff6f91 0%, #ffc66d 100%);
+  --grad-text: linear-gradient(120deg, #6c3dff 0%, #8e5cff 45%, #ff6f91 100%);
+
+  /* Light theme — bright, airy, faintly violet so puffy cards lift off. */
+  --background: #f4f1fb;
+  --foreground: #171227;
   --card: #ffffff;
-  --card-foreground: #0c111d;
+  --card-foreground: #171227;
   --popover: #ffffff;
-  --popover-foreground: #0c111d;
-  --primary: #12b76a;
+  --popover-foreground: #171227;
+  --primary: #6c3dff;
   --primary-foreground: #ffffff;
-  --secondary: #eef1f5;
-  --secondary-foreground: #0c111d;
-  --muted: #eef1f5;
-  --muted-foreground: #5b6472;
-  --accent: #e6faee;
-  --accent-foreground: #027a48;
-  --destructive: #f04438;
+  --secondary: #efeafb;
+  --secondary-foreground: #241b3d;
+  --muted: #efeafb;
+  --muted-foreground: #6b6484;
+  --accent: #efe7ff;
+  --accent-foreground: #5b28e0;
+  --destructive: #f0446a;
   --destructive-foreground: #ffffff;
-  --border: #dfe4ea;
-  --input: #e6e8eb;
-  --ring: #12b76a;
+  --border: #e6dff5;
+  --input: #e6dff5;
+  --ring: #6c3dff;
 
-  /* Claymorphism shadow ingredients (see .clay utilities below). */
+  /* Energetic multi-layer background wash (kept soft for readability). */
+  --app-bg:
+    radial-gradient(1100px 640px at 12% -12%, #ece0ff 0%, transparent 55%),
+    radial-gradient(1000px 680px at 112% 6%, #ffe2ea 0%, transparent 52%),
+    radial-gradient(950px 720px at 50% 118%, #e2ecff 0%, transparent 55%),
+    #f4f1fb;
+
+  /* Claymorphism shadow ingredients — tinted with deep indigo. */
   --clay-hi: rgba(255, 255, 255, 0.9);
-  --clay-lo: rgba(17, 40, 28, 0.1);
-  --clay-drop: rgba(20, 45, 33, 0.16);
+  --clay-lo: rgba(59, 30, 143, 0.12);
+  --clay-drop: rgba(59, 30, 143, 0.2);
 }
 
 .dark {
-  --background: #090d12;
-  --foreground: #eef2f6;
-  --card: #131b24;
-  --card-foreground: #eef2f6;
-  --popover: #131b24;
-  --popover-foreground: #eef2f6;
-  --primary: #17c26e;
-  --primary-foreground: #04150c;
-  --secondary: #1a242f;
-  --secondary-foreground: #eef2f6;
-  --muted: #1a242f;
-  --muted-foreground: #9aa7b4;
-  --accent: #10261b;
-  --accent-foreground: #6ce9a6;
-  --destructive: #f97066;
-  --destructive-foreground: #1a0605;
-  --border: #263340;
-  --input: #263340;
-  --ring: #6ce9a6;
+  --background: #0c0918;
+  --foreground: #efeafb;
+  --card: #171226;
+  --card-foreground: #efeafb;
+  --popover: #171226;
+  --popover-foreground: #efeafb;
+  --primary: #8e5cff;
+  --primary-foreground: #ffffff;
+  --secondary: #241b3d;
+  --secondary-foreground: #efeafb;
+  --muted: #241b3d;
+  --muted-foreground: #a99fc4;
+  --accent: #271b45;
+  --accent-foreground: #c9b8ff;
+  --destructive: #ff6f8a;
+  --destructive-foreground: #1a0510;
+  --border: #2e2450;
+  --input: #2e2450;
+  --ring: #8e5cff;
 
-  --clay-hi: rgba(255, 255, 255, 0.06);
+  --grad-primary: linear-gradient(135deg, #6c3dff 0%, #8e5cff 100%);
+  --grad-cta: linear-gradient(135deg, #ff6f91 0%, #ffb15f 100%);
+
+  --app-bg:
+    radial-gradient(1100px 640px at 12% -12%, #1e1147 0%, transparent 55%),
+    radial-gradient(1000px 680px at 112% 6%, #341236 0%, transparent 52%),
+    radial-gradient(950px 720px at 50% 118%, #101a44 0%, transparent 55%),
+    #0c0918;
+
+  --clay-hi: rgba(255, 255, 255, 0.07);
   --clay-lo: rgba(0, 0, 0, 0.5);
-  --clay-drop: rgba(0, 0, 0, 0.6);
+  --clay-drop: rgba(0, 0, 0, 0.62);
 }
 
 /* Map CSS variables to Tailwind color/radius utilities. */
@@ -95,6 +127,15 @@
   --color-brand-500: var(--brand-500);
   --color-brand-600: var(--brand-600);
   --color-brand-700: var(--brand-700);
+  --color-indigo: var(--indigo);
+  --color-royal: var(--royal);
+  --color-violet: var(--violet);
+  --color-coral: var(--coral);
+  --color-peach: var(--peach);
+  --color-sunset: var(--sunset);
+  --color-cyan: var(--cyan);
+  --color-lime: var(--lime);
+  --color-tennis: var(--tennis);
 
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 0.5rem);
@@ -109,14 +150,16 @@
     border-color: var(--border);
   }
   body {
+    background: var(--app-bg) fixed;
     background-color: var(--background);
     color: var(--foreground);
+    min-height: 100dvh;
     font-feature-settings: "cv11", "ss01";
     -webkit-font-smoothing: antialiased;
   }
   ::selection {
-    background-color: var(--brand-300);
-    color: #04150c;
+    background-color: var(--violet);
+    color: #ffffff;
   }
 }
 
@@ -168,4 +211,36 @@
   box-shadow:
     0 4px 10px -8px var(--clay-drop),
     inset 0 5px 12px var(--clay-lo);
+}
+
+/* ---------- Brand gradients ---------- */
+.grad-primary {
+  background-image: var(--grad-primary);
+}
+.grad-cta {
+  background-image: var(--grad-cta);
+}
+/* Vibrant gradient text for hero headings. */
+.text-gradient {
+  background-image: var(--grad-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Soft floating decorative blobs (behind hero content). */
+.blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(28px);
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 0;
+}
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) translateX(0) scale(1); }
+  50% { transform: translateY(-18px) translateX(10px) scale(1.05); }
+}
+.blob-float {
+  animation: float-slow 9s ease-in-out infinite;
 }

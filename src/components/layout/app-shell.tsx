@@ -40,7 +40,7 @@ export function AppShell({
       <aside className="sticky top-0 hidden h-dvh flex-col border-r border-border bg-card/50 md:flex">
         <div className="flex h-16 items-center gap-2 px-5">
           <Link href="/dashboard" className="flex items-center gap-2">
-            <span className="inline-flex size-8 items-center justify-center rounded-2xl bg-primary text-primary-foreground clay-sm">
+            <span className="inline-flex size-8 items-center justify-center rounded-2xl grad-primary text-white clay-sm">
               <span className="text-sm font-black">P</span>
             </span>
             <span className="font-bold tracking-tight">{APP_NAME}</span>

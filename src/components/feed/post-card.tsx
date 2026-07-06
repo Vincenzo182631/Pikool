@@ -160,7 +160,7 @@ export function PostCard({ post }: { post: PostItem }) {
           <button
             type="button"
             onClick={() => setShowComments(true)}
-            className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-primary px-4 py-1.5 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+            className="inline-flex shrink-0 items-center gap-1.5 rounded-full grad-cta px-4 py-1.5 text-sm font-semibold text-[#3b1e8f] clay-sm clay-pressable"
           >
             Say hi 👋
           </button>

@@ -130,7 +130,7 @@ export function BroadcastPanel({
       </div>
 
       <div className="mt-4 flex flex-wrap items-center gap-3">
-        <Button onClick={goLive} loading={broadcast.isPending} size="lg">
+        <Button onClick={goLive} loading={broadcast.isPending} size="lg" variant="cta">
           <Radio /> I&apos;m available
         </Button>
         <Button variant="outline" onClick={onLocate} loading={locating} disabled={broadcast.isPending}>
