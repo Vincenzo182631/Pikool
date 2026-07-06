@@ -37,6 +37,7 @@ export function CourtsExplorer() {
   if (environment) params.set("environment", environment);
   if (lighting) params.set("lighting", "true");
   params.set("sort", sort);
+  params.set("limit", "300");
   if (coords) {
     params.set("lat", String(coords.lat));
     params.set("lng", String(coords.lng));

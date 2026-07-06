@@ -16,7 +16,7 @@ export const courtsQuerySchema = z.object({
     .transform((v) => v === "true")
     .optional(),
   sort: z.enum(["distance", "rating", "name"]).default("rating"),
-  limit: z.coerce.number().int().min(1).max(100).default(50),
+  limit: z.coerce.number().int().min(1).max(300).default(60),
 });
 
 export const createCourtSchema = z.object({
