@@ -5,6 +5,7 @@ import { Users, SlidersHorizontal, MapPinOff } from "lucide-react";
 import { toast } from "sonner";
 import { PageHeader } from "@/components/layout/page-header";
 import { Button } from "@/components/ui/button";
+import { ClayIcon } from "@/components/ui/clay-icon";
 import { PLAY_FORMATS, SKILL_LEVELS } from "@/lib/validation/user";
 import { SKILL_META } from "@/lib/constants";
 import { usePlayers, useRequests, useMyAvailability } from "@/hooks/use-matchmaking";
@@ -79,7 +80,7 @@ export function MatchmakingClient() {
         <section>
           <div className="mb-3 flex items-center justify-between gap-2">
             <h2 className="flex items-center gap-2 font-semibold">
-              <Users className="size-5 text-primary" /> Available nearby
+              <ClayIcon icon={Users} tone="violet" size="sm" /> Available nearby
             </h2>
           </div>
 
@@ -122,8 +123,8 @@ export function MatchmakingClient() {
           </div>
 
           {!coords ? (
-            <div className="rounded-2xl border border-dashed border-border p-10 text-center">
-              <MapPinOff className="mx-auto mb-2 size-6 text-muted-foreground" />
+            <div className="rounded-3xl border border-dashed border-border p-10 text-center">
+              <ClayIcon icon={MapPinOff} tone="sky" size="lg" className="mx-auto mb-3" />
               <p className="font-medium">Share your location to find players</p>
               <p className="mb-4 text-sm text-muted-foreground">We&apos;ll show available players closest to you first.</p>
               <Button onClick={locate} loading={locating}>
@@ -137,8 +138,8 @@ export function MatchmakingClient() {
               ))}
             </div>
           ) : players.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-border p-10 text-center">
-              <Users className="mx-auto mb-2 size-6 text-muted-foreground" />
+            <div className="rounded-3xl border border-dashed border-border p-10 text-center">
+              <ClayIcon icon={Users} tone="violet" size="lg" className="mx-auto mb-3" />
               <p className="font-medium">No one&apos;s available right now</p>
               <p className="text-sm text-muted-foreground">
                 Broadcast your own availability above — nearby players get notified when you do.

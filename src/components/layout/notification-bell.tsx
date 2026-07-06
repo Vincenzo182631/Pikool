@@ -15,11 +15,13 @@ import {
   CheckCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ClayIcon, type ClayTone } from "@/components/ui/clay-icon";
 import { cn } from "@/lib/utils";
 import { useNotifications, useMarkNotificationsRead } from "@/hooks/use-notifications";
 import type { NotificationItem } from "@/types/notification";
+import type { LucideIcon } from "lucide-react";
 
-const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
+const ICONS: Record<string, LucideIcon> = {
   MESSAGE: MessageSquare,
   GAME_INVITE: Swords,
   FRIEND_REQUEST: UserPlus,
@@ -27,6 +29,16 @@ const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   TOURNAMENT: Trophy,
   WEATHER: CloudSun,
   SYSTEM: Info,
+};
+
+const TONES: Record<string, ClayTone> = {
+  MESSAGE: "cyan",
+  GAME_INVITE: "coral",
+  FRIEND_REQUEST: "violet",
+  CHECKIN: "sky",
+  TOURNAMENT: "sunset",
+  WEATHER: "peach",
+  SYSTEM: "violet",
 };
 
 /** Resolve where a notification should take the user when clicked. */
@@ -140,9 +152,7 @@ export function NotificationBell() {
                           !n.readAt && "bg-primary/5",
                         )}
                       >
-                        <span className="mt-0.5 grid size-8 shrink-0 place-items-center rounded-full bg-secondary text-muted-foreground">
-                          <Icon className="size-4" />
-                        </span>
+                        <ClayIcon icon={Icon} tone={TONES[n.type] ?? "violet"} size="sm" className="mt-0.5" />
                         <span className="min-w-0 flex-1">
                           <span className="block text-sm font-medium leading-snug">{n.title}</span>
                           {n.body && (

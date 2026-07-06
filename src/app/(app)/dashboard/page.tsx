@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { formatDistanceToNow } from "date-fns";
-import { ArrowRight, MapPin, Users, Sparkles, Bell, Activity, UserPen } from "lucide-react";
+import { ArrowRight, MapPin, Users, Sparkles, Bell, Activity, UserPen, type LucideIcon } from "lucide-react";
+import { ClayIcon, type ClayTone } from "@/components/ui/clay-icon";
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth/session";
 import { getFullUser, serializeMe } from "@/lib/services/user";
@@ -131,13 +132,15 @@ export default async function DashboardPage() {
       <div className="grid gap-4 sm:grid-cols-2">
         <QuickAction
           href="/map"
-          icon={<MapPin className="size-5" />}
+          icon={MapPin}
+          tone="sky"
           title="Find a court"
           body="See courts near you with live busy levels and check-ins."
         />
         <QuickAction
           href="/matchmaking"
-          icon={<Users className="size-5" />}
+          icon={Users}
+          tone="violet"
           title="Find players"
           body="Match with nearby players at your level and start a game."
         />
@@ -194,22 +197,22 @@ export default async function DashboardPage() {
 function QuickAction({
   href,
   icon,
+  tone,
   title,
   body,
 }: {
   href: string;
-  icon: React.ReactNode;
+  icon: LucideIcon;
+  tone: ClayTone;
   title: string;
   body: string;
 }) {
   return (
     <Link
       href={href}
-      className="group flex items-start gap-4 rounded-3xl bg-card clay p-5 transition-transform hover:-translate-y-0.5"
+      className="group flex items-start gap-4 rounded-3xl bg-card clay p-5 transition-transform hover:-translate-y-1"
     >
-      <span className="inline-flex size-11 items-center justify-center rounded-xl bg-accent text-accent-foreground">
-        {icon}
-      </span>
+      <ClayIcon icon={icon} tone={tone} size="md" />
       <div className="flex-1">
         <p className="flex items-center gap-1 font-semibold">
           {title}

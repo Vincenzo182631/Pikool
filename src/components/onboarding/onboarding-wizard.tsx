@@ -19,6 +19,7 @@ import { Field } from "@/components/ui/field";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
+import { ClayIcon } from "@/components/ui/clay-icon";
 import { ImageUpload } from "@/components/upload/image-upload";
 import { api, ApiClientError } from "@/lib/api-client";
 import { PLAY_FORMATS, DOMINANT_HANDS, SKILL_LEVELS, AVAILABILITY_OPTIONS } from "@/lib/validation/user";
@@ -272,9 +273,7 @@ export function OnboardingWizard({ me }: { me: Me | null }) {
 function WelcomeStep() {
   return (
     <div className="text-center">
-      <div className="mx-auto mb-5 grid size-16 place-items-center rounded-2xl bg-primary/10 text-primary">
-        <Trophy className="size-8" />
-      </div>
+      <ClayIcon icon={Trophy} tone="sunset" size="xl" className="mx-auto mb-5" />
       <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">Let&apos;s find your level</h1>
       <p className="mx-auto mt-3 max-w-md text-muted-foreground">
         A few quick, relatable questions about your game — no jargon. We&apos;ll estimate your skill rating so
