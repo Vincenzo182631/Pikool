@@ -68,6 +68,7 @@ enum PostType {
   PHOTO
   VIDEO
   POLL
+  WELCOME
 }
 
 enum ReactionType {

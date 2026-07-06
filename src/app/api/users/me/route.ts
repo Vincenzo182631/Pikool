@@ -4,6 +4,7 @@ import { requireUser } from "@/lib/auth/guards";
 import { logActivity } from "@/lib/activity";
 import { updateProfileSchema } from "@/lib/validation/user";
 import { getFullUser, serializeMe, skillMidpoint } from "@/lib/services/user";
+import { createWelcomePost } from "@/lib/services/post";
 
 export const runtime = "nodejs";
 
@@ -73,6 +74,12 @@ export const PATCH = route(async (req: Request) => {
         ...profileData,
         formats: input.formats,
       },
+    });
+    // Announce the new member in the feed so the community can welcome them.
+    await createWelcomePost({
+      userId: user.id,
+      displayName: input.displayName ?? input.username,
+      city: input.city,
     });
   } else {
     await db.profile.update({

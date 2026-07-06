@@ -7,6 +7,7 @@ import {
   Megaphone,
   ImageIcon,
   BarChart3,
+  PartyPopper,
   type LucideIcon,
 } from "lucide-react";
 
@@ -20,6 +21,8 @@ export const POST_TYPE_META: Record<string, { label: string; icon: LucideIcon }>
   TOURNAMENT_NEWS: { label: "Tournament", icon: Megaphone },
   PHOTO: { label: "Photo", icon: ImageIcon },
   POLL: { label: "Poll", icon: BarChart3 },
+  // Not composer-creatable — generated when a player joins the community.
+  WELCOME: { label: "New member", icon: PartyPopper },
 };
 
 export const COMPOSER_TYPES = [

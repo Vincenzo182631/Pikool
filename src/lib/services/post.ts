@@ -1,7 +1,33 @@
 import "server-only";
 import type { Prisma } from "@prisma/client";
+import { db } from "@/lib/db";
 import { initials } from "@/lib/utils";
 import type { PostItem } from "@/types/post";
+
+/**
+ * Announce a new member in the feed so the community can welcome them. Called
+ * once, when a player completes onboarding (their profile is first created).
+ * Best-effort — a failure here must never block onboarding.
+ */
+export async function createWelcomePost(input: {
+  userId: string;
+  displayName?: string | null;
+  city?: string | null;
+}): Promise<void> {
+  const who = input.displayName?.trim() || "A new player";
+  const where = input.city?.trim() ? ` from ${input.city.trim()}` : "";
+  try {
+    await db.post.create({
+      data: {
+        authorId: input.userId,
+        type: "WELCOME",
+        body: `👋 ${who}${where} just joined PicklePlay! Say hello and help them feel at home on the courts.`,
+      },
+    });
+  } catch (err) {
+    console.error("[post] welcome post failed:", err);
+  }
+}
 
 /** Prisma include shape for a feed post, personalized to `userId`. */
 export function postInclude(userId: string) {

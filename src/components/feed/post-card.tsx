@@ -147,6 +147,22 @@ export function PostCard({ post }: { post: PostItem }) {
       {/* body */}
       {post.body && <p className="mt-3 whitespace-pre-wrap text-[15px] leading-relaxed">{post.body}</p>}
 
+      {/* welcome — invite the community to say hi */}
+      {post.type === "WELCOME" && !post.isMine && (
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-primary/30 bg-primary/5 px-4 py-3">
+          <p className="text-sm font-medium text-foreground">
+            🎉 Give {post.author.name ? post.author.name.split(" ")[0] : "them"} a warm welcome to the community!
+          </p>
+          <button
+            type="button"
+            onClick={() => setShowComments(true)}
+            className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-primary px-4 py-1.5 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+          >
+            Say hi 👋
+          </button>
+        </div>
+      )}
+
       {/* match result */}
       {post.type === "MATCH_RESULT" && (post.meta?.result || post.meta?.score) && (
         <div className="mt-3 flex items-center gap-2 rounded-xl border border-border bg-secondary/40 px-3 py-2">
