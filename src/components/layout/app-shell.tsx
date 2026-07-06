@@ -3,13 +3,14 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Bell, LogOut, Search, Settings, ShieldCheck } from "lucide-react";
+import { LogOut, Search, Settings, ShieldCheck } from "lucide-react";
 import { NAV_ITEMS, APP_NAME } from "@/lib/constants";
 import { cn, initials } from "@/lib/utils";
 import { useMe, useLogout, type Me } from "@/hooks/use-auth";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { NotificationBell } from "@/components/layout/notification-bell";
 
 export function AppShell({
   initialUser,
@@ -106,9 +107,7 @@ export function AppShell({
             </Button>
           )}
           <ThemeToggle />
-          <Button variant="ghost" size="icon" aria-label="Notifications">
-            <Bell />
-          </Button>
+          <NotificationBell />
           <Button
             variant="ghost"
             size="icon"

@@ -158,6 +158,8 @@ model User {
   reviews       Review[]
   matches       MatchParticipant[]
   availability  AvailabilitySignal[]
+  sentRequests     MatchRequest[]    @relation("SentMatchRequests")
+  receivedRequests MatchRequest[]    @relation("ReceivedMatchRequests")
   ratingHistory RatingHistory[]
   achievements  UserAchievement[]
   reputation    Reputation?
@@ -365,6 +367,7 @@ model Court {
   reviews      Review[]
   homeProfiles Profile[]
   savedBy      SavedCourt[]
+  matchRequests MatchRequest[]
 
   @@index([lat, lng])
   @@index([city, country])
@@ -448,6 +451,35 @@ model MatchParticipant {
   user    User        @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([matchId, userId])
+}
+
+/// A pending "let's play" invite from one player to another. Turns matchmaking
+/// intent into a game once accepted.
+model MatchRequest {
+  id          String             @id @default(cuid())
+  fromUserId  String
+  toUserId    String
+  fromUser    User               @relation("SentMatchRequests", fields: [fromUserId], references: [id], onDelete: Cascade)
+  toUser      User               @relation("ReceivedMatchRequests", fields: [toUserId], references: [id], onDelete: Cascade)
+  courtId     String?
+  court       Court?             @relation(fields: [courtId], references: [id], onDelete: SetNull)
+  format      PlayFormat         @default(DOUBLES)
+  message     String?
+  proposedAt  DateTime?
+  status      MatchRequestStatus @default(PENDING)
+  createdAt   DateTime           @default(now())
+  respondedAt DateTime?
+
+  @@index([toUserId, status])
+  @@index([fromUserId, status])
+}
+
+enum MatchRequestStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  CANCELLED
+  EXPIRED
 }
 
 // ---------- Ratings & reputation ----------
