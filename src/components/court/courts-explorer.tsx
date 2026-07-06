@@ -3,13 +3,13 @@
 import * as React from "react";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
-import { LocateFixed, Search, Plus, MapPinned, Info } from "lucide-react";
+import { LocateFixed, Search, Plus, Info } from "lucide-react";
 import { toast } from "sonner";
 import { api } from "@/lib/api-client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { CourtCard } from "@/components/court/court-card";
-import { CourtMap, mapsEnabled } from "@/components/court/court-map";
+import { CourtMap } from "@/components/court/court-map";
 import { COURT_SURFACES, COURT_ENVIRONMENTS } from "@/lib/validation/court";
 import type { CourtListItem } from "@/types/court";
 
@@ -122,21 +122,8 @@ export function CourtsExplorer() {
         </Button>
       </div>
 
-      {/* Map or fallback banner */}
-      {mapsEnabled ? (
-        <CourtMap courts={courts ?? []} center={coords ?? undefined} />
-      ) : (
-        <div className="flex items-start gap-3 rounded-2xl border border-dashed border-border bg-card p-4 text-sm">
-          <MapPinned className="mt-0.5 size-5 shrink-0 text-muted-foreground" />
-          <div>
-            <p className="font-medium">Interactive map ready</p>
-            <p className="text-muted-foreground">
-              Add a <code className="rounded bg-secondary px-1">NEXT_PUBLIC_GOOGLE_MAPS_BROWSER_KEY</code>{" "}
-              to light up the live map. Courts are listed below in the meantime.
-            </p>
-          </div>
-        </div>
-      )}
+      {/* Interactive map (free — Leaflet + OpenStreetMap, no API key) */}
+      <CourtMap courts={courts ?? []} center={coords ?? undefined} />
 
       {/* List */}
       {isLoading ? (
