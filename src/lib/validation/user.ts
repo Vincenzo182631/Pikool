@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { imageRefSchema } from "@/lib/validation/media";
 
 export const SKILL_LEVELS = [
   "L2_0",
@@ -36,7 +37,7 @@ const usernameSchema = z
 export const onboardingSchema = z.object({
   username: usernameSchema,
   displayName: z.string().min(1, "Required").max(40).optional(),
-  avatarUrl: z.url().optional(),
+  avatarUrl: imageRefSchema.optional(),
   city: z.string().max(80).optional(),
   country: z.string().max(80).optional(),
   skillLevel: z.enum(SKILL_LEVELS),
@@ -53,7 +54,7 @@ export const onboardingSchema = z.object({
 export const updateProfileSchema = onboardingSchema.partial().extend({
   firstName: z.string().min(1).max(50).optional(),
   lastName: z.string().min(1).max(50).optional(),
-  coverUrl: z.url().optional(),
+  coverUrl: imageRefSchema.optional(),
 });
 
 export type OnboardingInput = z.infer<typeof onboardingSchema>;

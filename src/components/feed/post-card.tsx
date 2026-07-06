@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { useQueryClient } from "@tanstack/react-query";
 import { formatDistanceToNow } from "date-fns";
 import { Heart, MessageCircle, Share2, Bookmark, MoreHorizontal, Trash2, Flag, Trophy } from "lucide-react";
@@ -11,6 +10,7 @@ import { api, ApiClientError } from "@/lib/api-client";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { RatingBadge } from "@/components/ui/rating-badge";
+import { SmartImage } from "@/components/ui/smart-image";
 import { Stars } from "@/components/court/star-rating";
 import { POST_TYPE_META } from "@/lib/feed-meta";
 import { cn } from "@/lib/utils";
@@ -204,7 +204,7 @@ export function PostCard({ post }: { post: PostItem }) {
         <div className={cn("mt-3 grid gap-2 overflow-hidden rounded-xl", post.mediaUrls.length > 1 ? "grid-cols-2" : "grid-cols-1")}>
           {post.mediaUrls.map((url) => (
             <div key={url} className="relative aspect-video overflow-hidden rounded-lg bg-secondary">
-              <Image src={url} alt="" fill className="object-cover" sizes="600px" />
+              <SmartImage src={url} alt="" fill className="object-cover" sizes="600px" />
             </div>
           ))}
         </div>

@@ -1,5 +1,5 @@
 import * as React from "react";
-import Image from "next/image";
+import { SmartImage } from "@/components/ui/smart-image";
 import { cn } from "@/lib/utils";
 
 interface AvatarProps {
@@ -21,7 +21,7 @@ export function Avatar({ src, alt = "", fallback = "?", size = 40, className }: 
       style={{ width: size, height: size }}
     >
       {src ? (
-        <Image src={src} alt={alt} width={size} height={size} className="h-full w-full object-cover" />
+        <SmartImage src={src} alt={alt} width={size} height={size} className="h-full w-full object-cover" />
       ) : (
         <span
           className="font-semibold text-muted-foreground"

@@ -1,10 +1,10 @@
 import Link from "next/link";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { CalendarClock, Hand, MapPin, Star, UserPen } from "lucide-react";
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth/session";
 import { Avatar } from "@/components/ui/avatar";
+import { SmartImage } from "@/components/ui/smart-image";
 import { RatingBadge } from "@/components/ui/rating-badge";
 import { StatTile } from "@/components/ui/stat-tile";
 import { Badge } from "@/components/ui/badge";
@@ -55,7 +55,7 @@ export default async function PlayerPage({
         {/* Cover */}
         <div className="relative h-32 w-full sm:h-44">
           {profile.coverUrl ? (
-            <Image src={profile.coverUrl} alt="" fill className="object-cover" sizes="768px" />
+            <SmartImage src={profile.coverUrl} alt="" fill className="object-cover" sizes="768px" />
           ) : (
             <div
               className="h-full w-full"

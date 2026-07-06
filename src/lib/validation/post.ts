@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { imageRefSchema } from "@/lib/validation/media";
 
 export const POST_TYPES = [
   "TRAINING_TIP",
@@ -28,7 +29,7 @@ export const createPostSchema = z
   .object({
     type: z.enum(POST_TYPES),
     body: z.string().trim().max(1000).optional(),
-    mediaUrls: z.array(z.url()).max(4).optional(),
+    mediaUrls: z.array(imageRefSchema).max(4).optional(),
     meta: postMetaSchema,
   })
   .refine(
