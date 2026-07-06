@@ -47,10 +47,24 @@ export const POST = route(async (req: Request) => {
       expiresAt: new Date(Date.now() + OTP_TTL_MS),
     },
   });
-  await sendEmail({ to: input.email, ...otpEmail(code) });
+  // Don't hard-fail signup if the email provider hiccups — the account exists
+  // and the user can request a fresh code via "resend".
+  let emailSent = true;
+  try {
+    await sendEmail({ to: input.email, ...otpEmail(code) });
+  } catch (err) {
+    emailSent = false;
+    console.error("[signup] Failed to send verification email:", err);
+  }
 
   return ok(
-    { email: input.email, message: "Verification code sent." },
+    {
+      email: input.email,
+      emailSent,
+      message: emailSent
+        ? "Verification code sent."
+        : "Account created. Tap “Resend code” to get your verification email.",
+    },
     { status: 201 },
   );
 });
