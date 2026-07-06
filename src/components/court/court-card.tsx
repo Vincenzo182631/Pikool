@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { MapPin, Lightbulb, Home, Sun, Star, BadgeCheck } from "lucide-react";
 import { BusyMeter } from "@/components/court/busy-meter";
+import { CourtArt } from "@/components/court/court-art";
 import { formatDistance } from "@/lib/services/court";
 import type { CourtListItem } from "@/types/court";
 
@@ -16,13 +17,7 @@ export function CourtCard({ court }: { court: CourtListItem }) {
         {court.thumbnailUrl ? (
           <Image src={court.thumbnailUrl} alt="" fill className="object-cover" sizes="400px" />
         ) : (
-          <div
-            className="h-full w-full"
-            style={{
-              background:
-                "linear-gradient(120deg, color-mix(in srgb, var(--brand-500) 40%, transparent), color-mix(in srgb, var(--brand-700) 55%, transparent))",
-            }}
-          />
+          <CourtArt seed={court.id} />
         )}
         <span className="absolute right-2 top-2 flex items-center gap-1 rounded-full bg-black/45 px-2 py-0.5 text-xs font-medium text-white">
           {court.environment === "INDOOR" ? <Home className="size-3" /> : <Sun className="size-3" />}

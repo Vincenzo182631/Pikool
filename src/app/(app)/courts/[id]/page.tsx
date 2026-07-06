@@ -20,6 +20,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar } from "@/components/ui/avatar";
 import { RatingBadge } from "@/components/ui/rating-badge";
 import { BusyMeter } from "@/components/court/busy-meter";
+import { CourtArt } from "@/components/court/court-art";
 import { CheckInButton, SaveCourtButton, DirectionsButton } from "@/components/court/court-actions";
 import { CourtReviews } from "@/components/court/court-reviews";
 
@@ -51,13 +52,7 @@ export default async function CourtDetailPage({
         {court.photos[0] ? (
           <Image src={court.photos[0]} alt="" fill className="object-cover" sizes="900px" priority />
         ) : (
-          <div
-            className="h-full w-full"
-            style={{
-              background:
-                "linear-gradient(120deg, color-mix(in srgb, var(--brand-500) 45%, transparent), color-mix(in srgb, var(--brand-700) 60%, transparent))",
-            }}
-          />
+          <CourtArt seed={court.id} />
         )}
       </div>
 
