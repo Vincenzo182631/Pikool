@@ -32,6 +32,23 @@ export const createCourtSchema = z.object({
   amenities: z.array(z.string().max(40)).max(20).default([]),
 });
 
+/** Admin court edit — every field optional; verify/unverify inline. */
+export const adminUpdateCourtSchema = z.object({
+  name: z.string().min(2).max(120).optional(),
+  address: z.string().max(200).nullable().optional(),
+  city: z.string().max(80).nullable().optional(),
+  country: z.string().max(80).nullable().optional(),
+  lat: z.number().min(-90).max(90).optional(),
+  lng: z.number().min(-180).max(180).optional(),
+  surface: z.enum(COURT_SURFACES).optional(),
+  environment: z.enum(COURT_ENVIRONMENTS).optional(),
+  hasLighting: z.boolean().optional(),
+  amenities: z.array(z.string().max(40)).max(20).optional(),
+  phone: z.string().max(40).nullable().optional(),
+  website: z.string().max(300).nullable().optional(),
+  verified: z.boolean().optional(),
+});
+
 export const reviewSchema = z.object({
   rating: z.number().int().min(1).max(5),
   body: z.string().max(1000).optional(),

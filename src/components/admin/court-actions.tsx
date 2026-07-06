@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { apiFetch, api, ApiClientError } from "@/lib/api-client";
@@ -39,6 +40,9 @@ export function CourtAdminActions({ courtId, verified }: { courtId: string; veri
 
   return (
     <div className="flex justify-end gap-1.5">
+      <Button asChild size="sm" variant="ghost">
+        <Link href={`/admin/courts/${courtId}/edit`}>Edit</Link>
+      </Button>
       <Button size="sm" variant="outline" loading={busy === "verify"} onClick={toggle}>
         {verified ? "Unverify" : "Verify"}
       </Button>
