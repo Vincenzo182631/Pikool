@@ -3,8 +3,19 @@
  * (idempotent upserts). Run with: pnpm db:seed
  */
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcryptjs";
 
 const db = new PrismaClient();
+
+// A ready-to-use, pre-verified demo account so a live preview is usable
+// without an email provider. Change or remove before real launch.
+const DEMO = {
+  email: "demo@pikool.app",
+  password: "DemoPickle123!",
+  firstName: "Demo",
+  lastName: "Player",
+  username: "demo",
+};
 
 const ACHIEVEMENTS = [
   { key: "first_match", name: "First Serve", description: "Played your first recorded match." },
@@ -57,8 +68,53 @@ async function main() {
     }
   }
 
+  // Demo account: verified, onboarded, with a badge — usable immediately.
+  const demoUser = await db.user.upsert({
+    where: { email: DEMO.email },
+    update: {},
+    create: {
+      email: DEMO.email,
+      firstName: DEMO.firstName,
+      lastName: DEMO.lastName,
+      passwordHash: await bcrypt.hash(DEMO.password, 12),
+      emailVerified: new Date(),
+      roles: { create: { role: "PLAYER" } },
+      settings: { create: {} },
+      profile: {
+        create: {
+          username: DEMO.username,
+          displayName: "Demo Player",
+          city: "Austin",
+          country: "USA",
+          skillLevel: "L4_0",
+          ratingValue: 4.0,
+          dominantHand: "RIGHT",
+          playingStyle: "All-court",
+          yearsPlaying: 4,
+          favoritePaddle: "JOOLA Perseus",
+          formats: ["SINGLES", "DOUBLES", "MIXED"],
+          availability: ["WEEKDAY_EVENINGS", "WEEKENDS"],
+          bio: "Exploring PicklePlay. Always up for a game!",
+          gamesPlayed: 24,
+          wins: 15,
+          losses: 9,
+          currentStreak: 3,
+          longestStreak: 6,
+        },
+      },
+    },
+  });
+  const founder = await db.badge.findUnique({ where: { key: "founder" } });
+  if (founder) {
+    await db.userBadge.upsert({
+      where: { userId_badgeId: { userId: demoUser.id, badgeId: founder.id } },
+      update: {},
+      create: { userId: demoUser.id, badgeId: founder.id },
+    });
+  }
+
   console.log(
-    `Seeded ${ACHIEVEMENTS.length} achievements, ${BADGES.length} badges and ${COURTS.length} courts.`,
+    `Seeded ${ACHIEVEMENTS.length} achievements, ${BADGES.length} badges, ${COURTS.length} courts, and demo account (${DEMO.email}).`,
   );
 }
 

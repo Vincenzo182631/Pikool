@@ -15,7 +15,11 @@ function required(name: string, fallback?: string): string {
 }
 
 export const env = {
-  appUrl: process.env.APP_URL ?? "http://localhost:3000",
+  // Prefer an explicit APP_URL; on Vercel fall back to the auto-provided URL.
+  appUrl:
+    process.env.APP_URL ??
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined) ??
+    "http://localhost:3000",
   nodeEnv: process.env.NODE_ENV ?? "development",
   isProd: process.env.NODE_ENV === "production",
 
