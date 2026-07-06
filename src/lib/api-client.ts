@@ -62,6 +62,18 @@ export async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> 
   }
 }
 
+/** Like apiFetch but returns the full envelope (data + meta) for paginated lists. */
+export async function apiPage<T>(path: string): Promise<{ data: T; meta?: { nextCursor?: string | null } }> {
+  const res = await fetch(path, { credentials: "same-origin" });
+  const body = (await res.json().catch(() => null)) as
+    | (ApiSuccess<T> & { meta?: { nextCursor?: string | null } })
+    | ApiFailure
+    | null;
+  if (!body) throw new ApiClientError("INTERNAL", `Request failed (${res.status})`);
+  if (!body.ok) throw new ApiClientError(body.error.code, body.error.message, body.error.details);
+  return { data: body.data, meta: body.meta };
+}
+
 export const api = {
   get: <T>(path: string) => apiFetch<T>(path),
   post: <T>(path: string, body?: unknown) =>
