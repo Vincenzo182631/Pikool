@@ -4,6 +4,7 @@
  */
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import { PH_COURTS } from "./ph-courts";
 
 const db = new PrismaClient();
 
@@ -27,12 +28,6 @@ const ACHIEVEMENTS = [
   { key: "first_checkin", name: "Showed Up", description: "Checked in to a court." },
   { key: "level_3", name: "Developing", description: "Reached a 3.0 skill rating." },
   { key: "level_4", name: "Advanced", description: "Reached a 4.0 skill rating." },
-];
-
-const COURTS = [
-  { name: "Riverside Pickleball Courts", lat: 40.7411, lng: -73.9897, city: "New York", country: "USA", hasLighting: true },
-  { name: "Sunset Park Community Courts", lat: 34.0522, lng: -118.2437, city: "Los Angeles", country: "USA", hasLighting: false },
-  { name: "Lakeshore Athletic Club", lat: 41.8781, lng: -87.6298, city: "Chicago", country: "USA", hasLighting: true },
 ];
 
 const BADGES = [
@@ -59,11 +54,30 @@ async function main() {
     });
   }
 
-  for (const c of COURTS) {
+  // Remove the original placeholder sample courts (superseded by real data).
+  await db.court.deleteMany({
+    where: {
+      name: {
+        in: ["Riverside Pickleball Courts", "Sunset Park Community Courts", "Lakeshore Athletic Club"],
+      },
+    },
+  });
+
+  for (const c of PH_COURTS) {
     const existing = await db.court.findFirst({ where: { name: c.name } });
     if (!existing) {
       await db.court.create({
-        data: { ...c, amenities: ["Parking", "Restrooms", "Water"], verified: true },
+        data: {
+          name: c.name,
+          lat: c.lat,
+          lng: c.lng,
+          address: c.address,
+          city: c.city,
+          country: c.country,
+          hasLighting: c.hasLighting,
+          amenities: [],
+          verified: false, // crowd-sourced, pending admin review
+        },
       });
     }
   }
@@ -114,7 +128,7 @@ async function main() {
   }
 
   console.log(
-    `Seeded ${ACHIEVEMENTS.length} achievements, ${BADGES.length} badges, ${COURTS.length} courts, and demo account (${DEMO.email}).`,
+    `Seeded ${ACHIEVEMENTS.length} achievements, ${BADGES.length} badges, ${PH_COURTS.length} courts, and demo account (${DEMO.email}).`,
   );
 }
 
