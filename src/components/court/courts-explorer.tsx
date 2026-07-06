@@ -101,8 +101,8 @@ export function CourtsExplorer() {
         <button
           type="button"
           onClick={() => setLighting((v) => !v)}
-          className={`h-9 rounded-md border px-3 text-sm font-medium transition-colors ${
-            lighting ? "border-primary bg-primary text-primary-foreground" : "border-input bg-card text-muted-foreground"
+          className={`h-9 rounded-full px-3 text-sm font-semibold clay-pressable ${
+            lighting ? "bg-primary text-primary-foreground clay-sm" : "bg-secondary/60 text-muted-foreground clay-inset"
           }`}
         >
           Lit

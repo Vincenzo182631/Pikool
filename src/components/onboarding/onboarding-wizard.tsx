@@ -204,7 +204,7 @@ export function OnboardingWizard({ me }: { me: Me | null }) {
                             <span
                               className={cn(
                                 "grid size-6 shrink-0 place-items-center rounded-full border transition-colors",
-                                active ? "border-primary bg-primary text-primary-foreground" : "border-border",
+                                active ? "bg-primary text-primary-foreground clay-sm" : "border-border",
                               )}
                             >
                               {active && <Check className="size-4" />}
@@ -517,10 +517,10 @@ function Chip({ active, onClick, children }: { active: boolean; onClick: () => v
       onClick={onClick}
       aria-pressed={active}
       className={cn(
-        "rounded-full border px-4 py-1.5 text-sm font-medium transition-colors",
+        "rounded-full px-4 py-1.5 text-sm font-semibold clay-pressable",
         active
-          ? "border-primary bg-primary text-primary-foreground"
-          : "border-border bg-card text-muted-foreground hover:bg-secondary",
+          ? "bg-primary text-primary-foreground clay-sm"
+          : "bg-secondary/60 text-muted-foreground clay-inset hover:text-foreground",
       )}
     >
       {children}

@@ -8,7 +8,6 @@ import { Heart, MessageCircle, Share2, Bookmark, MoreHorizontal, Trash2, Flag, T
 import { toast } from "sonner";
 import { api, ApiClientError } from "@/lib/api-client";
 import { Avatar } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import { RatingBadge } from "@/components/ui/rating-badge";
 import { SmartImage } from "@/components/ui/smart-image";
 import { Stars } from "@/components/court/star-rating";
@@ -118,10 +117,15 @@ export function PostCard({ post }: { post: PostItem }) {
             <span className="text-xs text-muted-foreground">· {formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })}</span>
           </div>
           {meta && (
-            <Badge variant="secondary" className="mt-1">
+            <span
+              className={cn(
+                "mt-1 inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold clay-sm",
+                meta.tone,
+              )}
+            >
               <meta.icon className="size-3" />
               {meta.label}
-            </Badge>
+            </span>
           )}
         </div>
         <div className="relative">

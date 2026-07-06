@@ -173,10 +173,10 @@ export default function NewCourtPage() {
                         setAmenities((prev) => (active ? prev.filter((x) => x !== a) : [...prev, a]))
                       }
                       className={cn(
-                        "rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
+                        "rounded-full px-3 py-1.5 text-sm font-semibold clay-pressable",
                         active
-                          ? "border-primary bg-primary text-primary-foreground"
-                          : "border-border bg-card text-muted-foreground hover:bg-secondary",
+                          ? "bg-primary text-primary-foreground clay-sm"
+                          : "bg-secondary/60 text-muted-foreground clay-inset hover:text-foreground",
                       )}
                     >
                       {a}

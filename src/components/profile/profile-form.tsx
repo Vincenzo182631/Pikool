@@ -237,10 +237,10 @@ function Chip({
       type="button"
       onClick={onClick}
       className={cn(
-        "rounded-full border px-4 py-1.5 text-sm font-medium transition-colors",
+        "rounded-full px-4 py-1.5 text-sm font-semibold clay-pressable",
         active
-          ? "border-primary bg-primary text-primary-foreground"
-          : "border-border bg-card text-muted-foreground hover:bg-secondary",
+          ? "bg-primary text-primary-foreground clay-sm"
+          : "bg-secondary/60 text-muted-foreground clay-inset hover:text-foreground",
       )}
     >
       {children}
