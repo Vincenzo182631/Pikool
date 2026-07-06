@@ -6,15 +6,30 @@ import { toast } from "sonner";
 import { api, ApiClientError } from "@/lib/api-client";
 import { Button } from "@/components/ui/button";
 
-export function ReportActions({ reportId, removable }: { reportId: string; removable: boolean }) {
+/** Resolve every open report for a target at once. */
+export function ReportActions({
+  targetType,
+  targetId,
+  removable,
+}: {
+  targetType: string;
+  targetId: string;
+  removable: boolean;
+}) {
   const router = useRouter();
   const [busy, setBusy] = React.useState<string | null>(null);
 
-  async function resolve(status: "RESOLVED" | "DISMISSED", removeContent = false) {
-    setBusy(status + (removeContent ? "-rm" : ""));
+  async function act(action: "remove" | "resolve" | "dismiss") {
+    setBusy(action);
     try {
-      await api.post(`/api/admin/reports/${reportId}`, { status, removeContent });
-      toast.success(removeContent ? "Content removed & resolved" : status === "RESOLVED" ? "Resolved" : "Dismissed");
+      await api.post("/api/admin/reports/resolve", { targetType, targetId, action });
+      toast.success(
+        action === "remove"
+          ? "Content removed & reports resolved"
+          : action === "resolve"
+            ? "Resolved"
+            : "Dismissed",
+      );
       router.refresh();
     } catch (err) {
       toast.error(err instanceof ApiClientError ? err.message : "Action failed.");
@@ -26,14 +41,14 @@ export function ReportActions({ reportId, removable }: { reportId: string; remov
   return (
     <div className="flex flex-wrap gap-2">
       {removable && (
-        <Button size="sm" variant="destructive" loading={busy === "RESOLVED-rm"} onClick={() => resolve("RESOLVED", true)}>
+        <Button size="sm" variant="destructive" loading={busy === "remove"} onClick={() => act("remove")}>
           Remove content
         </Button>
       )}
-      <Button size="sm" variant="outline" loading={busy === "RESOLVED"} onClick={() => resolve("RESOLVED")}>
+      <Button size="sm" variant="outline" loading={busy === "resolve"} onClick={() => act("resolve")}>
         Resolve
       </Button>
-      <Button size="sm" variant="ghost" loading={busy === "DISMISSED"} onClick={() => resolve("DISMISSED")}>
+      <Button size="sm" variant="ghost" loading={busy === "dismiss"} onClick={() => act("dismiss")}>
         Dismiss
       </Button>
     </div>
