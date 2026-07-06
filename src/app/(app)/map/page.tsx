@@ -1,17 +1,16 @@
-import { FeaturePlaceholder } from "@/components/layout/feature-placeholder";
+import { PageHeader } from "@/components/layout/page-header";
+import { CourtsExplorer } from "@/components/court/courts-explorer";
+
+export const metadata = { title: "Courts & Map" };
 
 export default function MapPage() {
   return (
-    <FeaturePlaceholder
-      title="Map"
-      description="The definitive map of the pickleball world."
-      phase="Phase 1 · P0"
-      points={[
-        "Interactive Google Map with layered markers and filters",
-        "Courts, stores, coaches, clubs, tournaments and amenities",
-        "Live busy levels and current check-ins per court",
-        "Viewport-driven loading with clustering (see docs/10)",
-      ]}
-    />
+    <div className="mx-auto max-w-6xl">
+      <PageHeader
+        title="Courts"
+        description="Discover pickleball courts near you — with live busy levels and check-ins."
+      />
+      <CourtsExplorer />
+    </div>
   );
 }

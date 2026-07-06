@@ -14,6 +14,9 @@ import {
 export const APP_NAME = "PicklePlay";
 export const APP_TAGLINE = "The Ultimate Pickleball Community";
 
+/** How long a court check-in stays active before auto-expiring (docs/10). */
+export const CHECKIN_TTL_HOURS = 3;
+
 export interface NavItem {
   label: string;
   href: string;
