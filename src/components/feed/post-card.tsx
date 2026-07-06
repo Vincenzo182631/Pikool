@@ -101,7 +101,7 @@ export function PostCard({ post }: { post: PostItem }) {
   }
 
   return (
-    <article id={post.id} className="rounded-2xl border border-border bg-card p-4">
+    <article id={post.id} className="rounded-3xl bg-card clay p-4">
       {/* header */}
       <div className="flex items-start gap-3">
         <Avatar src={post.author.avatarUrl} fallback={post.author.initials} size={40} />

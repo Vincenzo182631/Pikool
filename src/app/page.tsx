@@ -83,7 +83,7 @@ export default function LandingPage() {
             {FEATURES.map(({ icon: Icon, title, body }) => (
               <div
                 key={title}
-                className="group rounded-2xl border border-border bg-card p-6 shadow-sm transition-transform hover:-translate-y-0.5"
+                className="group rounded-3xl bg-card clay p-6 shadow-sm transition-transform hover:-translate-y-0.5"
               >
                 <div className="mb-4 inline-flex size-11 items-center justify-center rounded-xl bg-accent text-accent-foreground">
                   <Icon className="size-5" />

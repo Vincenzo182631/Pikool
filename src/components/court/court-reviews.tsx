@@ -59,7 +59,7 @@ export function CourtReviews({
       </div>
 
       {open && (
-        <form onSubmit={submit} className="mb-6 space-y-3 rounded-xl border border-border bg-card p-4">
+        <form onSubmit={submit} className="mb-6 space-y-3 rounded-3xl bg-card clay p-4">
           <StarInput value={rating} onChange={setRating} />
           <Textarea
             placeholder="How were the courts? Nets, surface, lighting, crowd…"

@@ -55,7 +55,7 @@ export default async function AdminOverviewPage() {
       )}
 
       <div className="mt-6 grid gap-4 lg:grid-cols-2">
-        <div className="rounded-2xl border border-border bg-card p-5">
+        <div className="rounded-3xl bg-card clay p-5">
           <h2 className="mb-3 text-sm font-semibold">Quick links</h2>
           <div className="grid gap-2">
             <QuickLink href="/admin/users" icon={<Users className="size-4" />} label="Manage users & roles" />
@@ -65,7 +65,7 @@ export default async function AdminOverviewPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-border bg-card p-5">
+        <div className="rounded-3xl bg-card clay p-5">
           <h2 className="mb-3 text-sm font-semibold">Recent activity</h2>
           {recentActivity.length === 0 ? (
             <p className="text-sm text-muted-foreground">No activity yet.</p>

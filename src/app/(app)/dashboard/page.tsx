@@ -205,7 +205,7 @@ function QuickAction({
   return (
     <Link
       href={href}
-      className="group flex items-start gap-4 rounded-2xl border border-border bg-card p-5 transition-transform hover:-translate-y-0.5"
+      className="group flex items-start gap-4 rounded-3xl bg-card clay p-5 transition-transform hover:-translate-y-0.5"
     >
       <span className="inline-flex size-11 items-center justify-center rounded-xl bg-accent text-accent-foreground">
         {icon}

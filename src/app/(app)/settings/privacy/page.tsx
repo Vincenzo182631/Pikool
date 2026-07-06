@@ -8,7 +8,7 @@ import { useUpdateSettings } from "@/hooks/use-settings";
 import { VISIBILITY_OPTIONS } from "@/lib/validation/settings";
 
 const selectClass =
-  "flex h-10 w-full max-w-xs rounded-md border border-input bg-card px-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring";
+  "flex h-10 w-full max-w-xs rounded-2xl border border-border/60 bg-secondary/60 clay-inset px-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring";
 
 const VIS_LABELS: Record<string, string> = {
   PUBLIC: "Public — anyone can view",

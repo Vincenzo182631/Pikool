@@ -14,7 +14,7 @@ import { COURT_SURFACES, COURT_ENVIRONMENTS } from "@/lib/validation/court";
 import type { CourtListItem } from "@/types/court";
 
 const selectClass =
-  "h-9 rounded-md border border-input bg-card px-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring";
+  "h-9 rounded-2xl border border-border/60 bg-secondary/60 clay-inset px-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring";
 
 export function CourtsExplorer() {
   const [q, setQ] = React.useState("");

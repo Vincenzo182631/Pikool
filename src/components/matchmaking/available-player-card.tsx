@@ -30,7 +30,7 @@ export function AvailablePlayerCard({ player }: { player: AvailablePlayer }) {
   }
 
   return (
-    <div className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4">
+    <div className="flex items-center gap-3 rounded-3xl bg-card clay p-4">
       <Link href={player.username ? `/players/${player.username}` : "#"} className="shrink-0">
         <Avatar src={player.avatarUrl} fallback={player.initials} size={48} />
       </Link>

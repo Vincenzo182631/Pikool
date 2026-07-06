@@ -23,7 +23,7 @@ import { cn } from "@/lib/utils";
 import type { Me } from "@/types/user";
 
 const selectClass =
-  "flex h-10 w-full rounded-md border border-input bg-card px-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring";
+  "flex h-10 w-full rounded-2xl border border-border/60 bg-secondary/60 clay-inset px-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring";
 
 type Mode = "onboarding" | "edit";
 

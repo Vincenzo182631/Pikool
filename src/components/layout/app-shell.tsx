@@ -40,7 +40,7 @@ export function AppShell({
       <aside className="sticky top-0 hidden h-dvh flex-col border-r border-border bg-card/50 md:flex">
         <div className="flex h-16 items-center gap-2 px-5">
           <Link href="/dashboard" className="flex items-center gap-2">
-            <span className="inline-flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+            <span className="inline-flex size-8 items-center justify-center rounded-2xl bg-primary text-primary-foreground clay-sm">
               <span className="text-sm font-black">P</span>
             </span>
             <span className="font-bold tracking-tight">{APP_NAME}</span>
@@ -54,9 +54,9 @@ export function AppShell({
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                  "flex items-center gap-3 rounded-2xl px-3 py-2 text-sm font-semibold transition-all",
                   active
-                    ? "bg-accent text-accent-foreground"
+                    ? "bg-primary text-primary-foreground clay-sm"
                     : "text-muted-foreground hover:bg-secondary hover:text-foreground",
                 )}
               >
@@ -95,7 +95,7 @@ export function AppShell({
               <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
               <input
                 placeholder="Search players, courts, clubs…"
-                className="h-10 w-full rounded-full border border-input bg-card pl-9 pr-4 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="h-10 w-full rounded-full border border-border/60 bg-secondary/60 pl-9 pr-4 text-sm outline-none clay-inset focus-visible:ring-2 focus-visible:ring-ring"
               />
             </div>
           </div>
@@ -134,11 +134,18 @@ export function AppShell({
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "flex flex-col items-center gap-1 py-2.5 text-[11px] font-medium",
+                  "flex flex-col items-center gap-1 py-2.5 text-[11px] font-semibold",
                   active ? "text-primary" : "text-muted-foreground",
                 )}
               >
-                <item.icon className="size-5" />
+                <span
+                  className={cn(
+                    "grid size-9 place-items-center rounded-2xl transition-all",
+                    active && "bg-primary text-primary-foreground clay-sm",
+                  )}
+                >
+                  <item.icon className="size-5" />
+                </span>
                 {item.label}
               </Link>
             );

@@ -148,7 +148,7 @@ export function OnboardingWizard({ me }: { me: Me | null }) {
         <Progress value={((step + 1) / total) * 100} />
       </div>
 
-      <div className="relative overflow-hidden rounded-3xl border border-border bg-card p-6 shadow-sm sm:p-8">
+      <div className="relative overflow-hidden rounded-3xl bg-card clay p-6 shadow-sm sm:p-8">
         <AnimatePresence mode="wait" custom={dir}>
           <motion.div
             key={current}

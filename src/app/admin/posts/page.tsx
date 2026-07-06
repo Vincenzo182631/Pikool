@@ -32,7 +32,7 @@ export default async function AdminPostsPage() {
             const meta = POST_TYPE_META[p.type];
             const name = [p.author.firstName, p.author.lastName].filter(Boolean).join(" ") || p.author.email;
             return (
-              <div key={p.id} className="flex items-start justify-between gap-3 rounded-2xl border border-border bg-card p-4">
+              <div key={p.id} className="flex items-start justify-between gap-3 rounded-3xl bg-card clay p-4">
                 <div className="min-w-0">
                   <div className="mb-1 flex items-center gap-2">
                     {meta && (

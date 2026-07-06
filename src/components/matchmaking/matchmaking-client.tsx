@@ -14,7 +14,7 @@ import { AvailablePlayerCard } from "@/components/matchmaking/available-player-c
 
 const FORMAT_LABEL: Record<string, string> = { SINGLES: "Singles", DOUBLES: "Doubles", MIXED: "Mixed" };
 const selectClass =
-  "h-9 rounded-md border border-input bg-card px-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring";
+  "h-9 rounded-2xl border border-border/60 bg-secondary/60 clay-inset px-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring";
 
 export function MatchmakingClient() {
   const [coords, setCoords] = React.useState<{ lat: number; lng: number } | null>(null);

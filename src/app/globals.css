@@ -4,7 +4,8 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --radius: 0.9rem;
+  /* Chunky, tactile radius — the clay look leans on generous rounding. */
+  --radius: 1.5rem;
 
   /* Brand — pickleball-court green */
   --brand-50: #ecfdf3;
@@ -14,8 +15,8 @@
   --brand-600: #039855;
   --brand-700: #027a48;
 
-  /* Light theme */
-  --background: #f7f8fa;
+  /* Light theme — soft tinted canvas so puffy cards lift off the surface. */
+  --background: #e7ecf1;
   --foreground: #0c111d;
   --card: #ffffff;
   --card-foreground: #0c111d;
@@ -23,39 +24,48 @@
   --popover-foreground: #0c111d;
   --primary: #12b76a;
   --primary-foreground: #ffffff;
-  --secondary: #f1f3f5;
+  --secondary: #eef1f5;
   --secondary-foreground: #0c111d;
-  --muted: #f1f3f5;
+  --muted: #eef1f5;
   --muted-foreground: #5b6472;
-  --accent: #ecfdf3;
+  --accent: #e6faee;
   --accent-foreground: #027a48;
   --destructive: #f04438;
   --destructive-foreground: #ffffff;
-  --border: #e6e8eb;
+  --border: #dfe4ea;
   --input: #e6e8eb;
   --ring: #12b76a;
+
+  /* Claymorphism shadow ingredients (see .clay utilities below). */
+  --clay-hi: rgba(255, 255, 255, 0.9);
+  --clay-lo: rgba(17, 40, 28, 0.1);
+  --clay-drop: rgba(20, 45, 33, 0.16);
 }
 
 .dark {
-  --background: #0b0f14;
+  --background: #090d12;
   --foreground: #eef2f6;
-  --card: #111820;
+  --card: #131b24;
   --card-foreground: #eef2f6;
-  --popover: #111820;
+  --popover: #131b24;
   --popover-foreground: #eef2f6;
   --primary: #17c26e;
   --primary-foreground: #04150c;
-  --secondary: #161f29;
+  --secondary: #1a242f;
   --secondary-foreground: #eef2f6;
-  --muted: #161f29;
+  --muted: #1a242f;
   --muted-foreground: #9aa7b4;
   --accent: #10261b;
   --accent-foreground: #6ce9a6;
   --destructive: #f97066;
   --destructive-foreground: #1a0605;
-  --border: #23303d;
-  --input: #23303d;
+  --border: #263340;
+  --input: #263340;
   --ring: #6ce9a6;
+
+  --clay-hi: rgba(255, 255, 255, 0.06);
+  --clay-lo: rgba(0, 0, 0, 0.5);
+  --clay-drop: rgba(0, 0, 0, 0.6);
 }
 
 /* Map CSS variables to Tailwind color/radius utilities. */
@@ -87,9 +97,9 @@
   --color-brand-700: var(--brand-700);
 
   --radius-lg: var(--radius);
-  --radius-md: calc(var(--radius) - 0.25rem);
-  --radius-sm: calc(var(--radius) - 0.5rem);
-  --radius-xl: calc(var(--radius) + 0.25rem);
+  --radius-md: calc(var(--radius) - 0.5rem);
+  --radius-sm: calc(var(--radius) - 0.85rem);
+  --radius-xl: calc(var(--radius) + 0.5rem);
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }
@@ -125,4 +135,37 @@
   background-color: color-mix(in srgb, var(--card) 72%, transparent);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
+}
+
+/* ---------- Claymorphism ----------
+   Raised clay = an outer drop + an inner top highlight + inner bottom shadow,
+   giving surfaces an inflated, soft-plastic look. Carved clay inverts it. */
+.clay {
+  box-shadow:
+    0 12px 24px -8px var(--clay-drop),
+    inset 0 6px 12px var(--clay-hi),
+    inset 0 -8px 14px var(--clay-lo);
+}
+.clay-sm {
+  box-shadow:
+    0 6px 14px -6px var(--clay-drop),
+    inset 0 3px 6px var(--clay-hi),
+    inset 0 -4px 8px var(--clay-lo);
+}
+.clay-inset {
+  box-shadow:
+    inset 0 3px 7px var(--clay-lo),
+    inset 0 -2px 4px var(--clay-hi);
+}
+.clay-pressable {
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease,
+    background-color 0.12s ease;
+}
+.clay-pressable:active {
+  transform: translateY(2px) scale(0.99);
+  box-shadow:
+    0 4px 10px -8px var(--clay-drop),
+    inset 0 5px 12px var(--clay-lo);
 }

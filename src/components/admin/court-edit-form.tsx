@@ -11,7 +11,7 @@ import { adminUpdateCourtSchema, COURT_SURFACES, COURT_ENVIRONMENTS } from "@/li
 import { cn } from "@/lib/utils";
 
 const selectClass =
-  "flex h-10 w-full rounded-md border border-input bg-card px-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring";
+  "flex h-10 w-full rounded-2xl border border-border/60 bg-secondary/60 clay-inset px-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring";
 
 const AMENITY_OPTIONS = ["Parking", "Restrooms", "Water", "Nets provided", "Seating", "Pro shop", "Coffee"];
 

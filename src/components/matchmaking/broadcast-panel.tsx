@@ -14,7 +14,7 @@ import type { MyAvailability } from "@/types/matchmaking";
 
 const FORMAT_LABEL: Record<string, string> = { SINGLES: "Singles", DOUBLES: "Doubles", MIXED: "Mixed" };
 const selectClass =
-  "h-10 rounded-md border border-input bg-card px-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring";
+  "h-10 rounded-2xl border border-border/60 bg-secondary/60 clay-inset px-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring";
 
 export function BroadcastPanel({
   coords,
@@ -85,7 +85,7 @@ export function BroadcastPanel({
   }
 
   return (
-    <div className="rounded-2xl border border-border bg-card p-5">
+    <div className="rounded-3xl bg-card clay p-5">
       <div className="mb-4 flex items-center gap-2">
         <Radio className="size-5 text-primary" />
         <h2 className="font-semibold">Broadcast that you&apos;re up for a game</h2>

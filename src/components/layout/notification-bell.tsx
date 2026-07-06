@@ -104,7 +104,7 @@ export function NotificationBell() {
         <div
           role="dialog"
           aria-label="Notifications"
-          className="absolute right-0 z-50 mt-2 w-80 origin-top-right overflow-hidden rounded-2xl border border-border bg-card shadow-lg animate-in fade-in-0 zoom-in-95 sm:w-96"
+          className="absolute right-0 z-50 mt-2 w-80 origin-top-right overflow-hidden rounded-3xl bg-card clay shadow-lg animate-in fade-in-0 zoom-in-95 sm:w-96"
         >
           <div className="flex items-center justify-between border-b border-border px-4 py-3">
             <p className="text-sm font-semibold">Notifications</p>

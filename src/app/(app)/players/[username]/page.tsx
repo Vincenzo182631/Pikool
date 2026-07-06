@@ -51,7 +51,7 @@ export default async function PlayerPage({
 
   return (
     <div className="mx-auto max-w-3xl">
-      <div className="overflow-hidden rounded-2xl border border-border bg-card">
+      <div className="overflow-hidden rounded-3xl bg-card clay">
         {/* Cover */}
         <div className="relative h-32 w-full sm:h-44">
           {profile.coverUrl ? (
@@ -148,7 +148,7 @@ export default async function PlayerPage({
       )}
 
       {/* Badges */}
-      <div className="mt-4 rounded-2xl border border-border bg-card p-5">
+      <div className="mt-4 rounded-3xl bg-card clay p-5">
         <h2 className="mb-3 text-sm font-semibold">Badges &amp; achievements</h2>
         {profile.user.badges.length === 0 ? (
           <p className="text-sm text-muted-foreground">
@@ -171,7 +171,7 @@ export default async function PlayerPage({
       </div>
 
       {profile.bio && (
-        <div className="mt-4 rounded-2xl border border-border bg-card p-5">
+        <div className="mt-4 rounded-3xl bg-card clay p-5">
           <h2 className="mb-1 text-sm font-semibold">About</h2>
           <p className="text-sm text-muted-foreground">{profile.bio}</p>
         </div>

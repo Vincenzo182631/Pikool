@@ -17,7 +17,7 @@ import { createPostSchema } from "@/lib/validation/post";
 import { cn } from "@/lib/utils";
 
 const inputCls =
-  "h-9 flex-1 rounded-md border border-input bg-card px-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring";
+  "h-9 flex-1 rounded-2xl border border-border/60 bg-secondary/60 clay-inset px-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring";
 
 export function PostComposer() {
   const { data: me } = useMe();
@@ -86,7 +86,7 @@ export function PostComposer() {
   }
 
   return (
-    <div className="rounded-2xl border border-border bg-card p-4">
+    <div className="rounded-3xl bg-card clay p-4">
       <div className="flex gap-3">
         <Avatar src={me?.profile?.avatarUrl} fallback={me?.profile ? me.profile.username[0]!.toUpperCase() : "?"} size={40} />
         <div className="flex-1 space-y-3">
