@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Bell, LogOut, Search, Settings } from "lucide-react";
+import { Bell, LogOut, Search, Settings, ShieldCheck } from "lucide-react";
 import { NAV_ITEMS, APP_NAME } from "@/lib/constants";
 import { cn, initials } from "@/lib/utils";
 import { useMe, useLogout, type Me } from "@/hooks/use-auth";
@@ -98,6 +98,13 @@ export function AppShell({
               />
             </div>
           </div>
+          {user?.roles.includes("ADMIN") && (
+            <Button asChild variant="ghost" size="icon" aria-label="Admin">
+              <Link href="/admin">
+                <ShieldCheck />
+              </Link>
+            </Button>
+          )}
           <ThemeToggle />
           <Button variant="ghost" size="icon" aria-label="Notifications">
             <Bell />

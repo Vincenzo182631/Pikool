@@ -129,6 +129,13 @@ async function main() {
       create: { userId: demoUser.id, badgeId: founder.id },
     });
   }
+  // Give the demo account ADMIN so the admin panel is explorable in the preview.
+  // (In production, don't grant ADMIN to a shared demo login.)
+  await db.userRole.upsert({
+    where: { userId_role: { userId: demoUser.id, role: "ADMIN" } },
+    update: {},
+    create: { userId: demoUser.id, role: "ADMIN" },
+  });
 
   console.log(
     `Seeded ${ACHIEVEMENTS.length} achievements, ${BADGES.length} badges, ${PH_COURTS.length} courts, and demo account (${DEMO.email}).`,
