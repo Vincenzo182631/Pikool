@@ -5,8 +5,9 @@
  * milestones, and community polls. Posts also get realistic likes and comments
  * so the feed feels active for UX review.
  *
- * Self-contained: photo posts use inline SVG data-URL images (no network or
- * storage provider needed), so they always render in any environment.
+ * Photo posts use real images from Unsplash's open image CDN
+ * (images.unsplash.com, already whitelisted in next.config.ts). Every id was
+ * verified to return a live image before committing.
  *
  * Idempotent: every re-run first removes prior feed-seed users (email prefix
  * `seed.`) — cascades clear their posts, reactions, and comments — then rebuilds.
@@ -21,34 +22,28 @@ const db = new PrismaClient();
 const SEED_PREFIX = "seed.";
 
 // ---------------------------------------------------------------------------
-// Inline SVG image helper — a themed gradient card with an emoji + caption.
-// SmartImage renders any `data:` URL as a plain <img>, so this always shows.
+// Real photos from Unsplash's open image CDN (whitelisted in next.config.ts).
+// Every id below was verified to return a live image before committing.
+// `img()` requests an optimized, cropped 1200px-wide JPEG.
 // ---------------------------------------------------------------------------
-const GRADIENTS: Record<string, [string, string]> = {
-  paddle: ["#7c3aed", "#c026d3"],
-  court: ["#0ea5e9", "#22c55e"],
-  ootd: ["#f43f5e", "#f59e0b"],
-  trophy: ["#f59e0b", "#ef4444"],
-  gear: ["#8b5cf6", "#ec4899"],
-  action: ["#06b6d4", "#3b82f6"],
-};
+function img(id: string): string {
+  return `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=1200&q=80`;
+}
 
-function photo(kind: keyof typeof GRADIENTS, emoji: string, caption: string): string {
-  const [a, b] = GRADIENTS[kind]!;
-  // Deterministic id per gradient so re-runs produce identical markup.
-  const gid = `g_${kind}`;
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
-<defs><linearGradient id="${gid}" x1="0" y1="0" x2="1" y2="1">
-<stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/>
-</linearGradient></defs>
-<rect width="1200" height="675" fill="url(#${gid})"/>
-<circle cx="1000" cy="130" r="220" fill="#ffffff" opacity="0.08"/>
-<circle cx="180" cy="560" r="160" fill="#ffffff" opacity="0.08"/>
-<text x="600" y="330" font-size="180" text-anchor="middle" dominant-baseline="central">${emoji}</text>
-<text x="600" y="500" font-size="52" fill="#ffffff" font-family="system-ui,Segoe UI,Roboto,sans-serif" font-weight="700" text-anchor="middle" opacity="0.95">${caption}</text>
-</svg>`;
-  // utf8 data URL (SmartImage keys only on the "data:" prefix).
-  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+/** Curated, verified Unsplash photo ids grouped by feed subject. */
+const PIX = {
+  action: ["1659318006095-4d44845f3a1b", "1710772099352-f8fbb7b30977", "1693142518820-78d7a05f1546", "1734161081396-0f0572a16bf6", "1723004714201-cf224222b897"],
+  paddle: ["1618551763300-dc7eb8ce3560", "1737476997205-b3336182f215", "1737476996922-828e3975f631", "1693142517898-2f986215e412", "1642104798671-01a4129f4fdc"],
+  court: ["1545151414-8a948e1ea54f", "1620742820748-87c09249a72a", "1499510318569-1a3d67dc3976", "1541744573515-478c959628a0", "1547934045-2942d193cb49", "1542144582-1ba00456b5e3"],
+  ootd: ["1595435742656-5272d0b3fa82", "1595435934249-5df7ed86e1c0", "1637071692126-d0ee7df18271", "1597726364265-02f57397c03c", "1599586120162-c282f39edd1e", "1547073044-67b2ec97ed0e"],
+  gear: ["1604712941007-2627cfd759fd", "1616066753769-b46d9d825331", "1649888187589-552bfa7bf681", "1526506118085-60ce8714f8c5", "1547347298-4074fc3086f0"],
+  trophy: ["1578269174936-2709b6aeb913", "1514820720301-4c4790309f46", "1625643268477-838321f445bb", "1550438655-400744b9fefc", "1663657876166-03b3aabb5483"],
+} as const;
+
+/** Nth image (wrapping) from a subject bucket — deterministic, no RNG. */
+function pic(kind: keyof typeof PIX, n = 0): string {
+  const bucket = PIX[kind];
+  return img(bucket[n % bucket.length]!);
 }
 
 // ---------------------------------------------------------------------------
@@ -129,7 +124,7 @@ const P: SeedPost[] = [
     by: "hana_t",
     type: "PHOTO",
     body: "OOTD 💜 New skort + visor combo for today's session. Feeling fast even if my footwork says otherwise 😂 #courtfashion",
-    media: [photo("ootd", "👟", "Outfit of the Day")],
+    media: [pic("ootd", 0)],
     likes: 31,
     comments: [
       { by: "chloe_court", body: "Obsessed with this fit!" },
@@ -148,7 +143,7 @@ const P: SeedPost[] = [
     type: "PADDLE_REVIEW",
     body: "Switched to the Ronbus Ripple after two weeks of testing. Insane spin numbers and the sweet spot is huge. Control took a session to dial in but wow — worth it.",
     meta: { rating: 5, subject: "Ronbus Ripple" },
-    media: [photo("paddle", "🏓", "New Paddle Day")],
+    media: [pic("paddle", 0)],
     likes: 27,
     comments: [
       { by: "tomas_topspin", body: "How's the hand speed at the net?" },
@@ -185,7 +180,7 @@ const P: SeedPost[] = [
     by: "chloe_court",
     type: "PHOTO",
     body: "Golden hour at the courts in Sydney 🌅 Doesn't get better than this. Three hours of open play and my legs are jelly.",
-    media: [photo("court", "🏟️", "Court Views")],
+    media: [pic("court", 0)],
     likes: 44,
     comments: [{ by: "emma_edge", body: "This is stunning 😍" }],
   },
@@ -200,7 +195,7 @@ const P: SeedPost[] = [
     by: "aisha_ace",
     type: "PHOTO",
     body: "New gear drop 📦 Grabbed a fresh grip, some cushioned balls, and a court bag that finally fits everything. Accessory game strong. 💪",
-    media: [photo("gear", "🎒", "New Accessories")],
+    media: [pic("gear", 0)],
     likes: 18,
     comments: [{ by: "hana_t", body: "That bag is clean! Brand?" }],
   },
@@ -241,7 +236,7 @@ const P: SeedPost[] = [
     by: "diego_drive",
     type: "PHOTO",
     body: "Game recap 📸 4 hours, 6 games, countless dinks. My squad went 5-1 on the day. Best community in the city, hands down. 🏓💚",
-    media: [photo("action", "🤾", "Game Recap"), photo("court", "🏟️", "Home Courts")],
+    media: [pic("action", 0), pic("court", 1)],
     likes: 38,
     comments: [{ by: "raj_reset", body: "5-1 is a heater! GGs all around." }],
   },
@@ -267,7 +262,7 @@ const P: SeedPost[] = [
     by: "sofia_smash",
     type: "PHOTO",
     body: "OOTD but make it tournament-ready 🔥 Matching kit, fresh laces, war paint on. If you look fast, you play fast (allegedly).",
-    media: [photo("ootd", "🎽", "Tournament Fit")],
+    media: [pic("ootd", 1)],
     likes: 34,
     comments: [{ by: "hana_t", body: "The coordination! Iconic 💅" }],
   },
@@ -308,7 +303,7 @@ const P: SeedPost[] = [
     by: "emma_edge",
     type: "PHOTO",
     body: "First-ever paddle! 🎉 Went with a Vatic Pro Flash on the recommendations here. Data says beginner-friendly, my heart says pro. New paddle, new me.",
-    media: [photo("paddle", "🏓", "First Paddle")],
+    media: [pic("paddle", 1)],
     likes: 28,
     comments: [
       { by: "maya_dinks", body: "Great first choice! You'll love it." },
@@ -349,7 +344,7 @@ const P: SeedPost[] = [
     by: "chloe_court",
     type: "PHOTO",
     body: "New accessories haul 🛍️ Court shoes with proper lateral support (my ankles thank me), sweatbands, and a ball hopper. Investing in the addiction, one purchase at a time.",
-    media: [photo("gear", "👟", "Gear Haul")],
+    media: [pic("gear", 1)],
     likes: 22,
     comments: [{ by: "noah_kitchen", body: "Court-specific shoes are non-negotiable. Smart." }],
   },
@@ -364,7 +359,7 @@ const P: SeedPost[] = [
     by: "priya_p",
     type: "PHOTO",
     body: "Recap from Bengaluru Sunday league 📸 Packed courts, new faces, and my dink game finally clicked in game 4. Community here is growing so fast 🇮🇳💚",
-    media: [photo("action", "🏸", "Sunday League")],
+    media: [pic("action", 1)],
     likes: 26,
     comments: [{ by: "raj_reset", body: "Love to see the scene growing over there!" }],
   },
@@ -399,7 +394,7 @@ const P: SeedPost[] = [
     type: "PADDLE_REVIEW",
     body: "Testing the Vatic Pro Prism for a month as a 3.0. Honestly perfect for learning — forgiving face, comfy weight, easy on the arm. Great value for anyone starting out.",
     meta: { rating: 5, subject: "Vatic Pro Prism" },
-    media: [photo("paddle", "🏓", "Paddle Review")],
+    media: [pic("paddle", 2)],
     likes: 19,
     comments: [{ by: "emma_edge", body: "Torn between this and the Flash!" }],
   },
@@ -421,7 +416,7 @@ const P: SeedPost[] = [
     by: "aisha_ace",
     type: "PHOTO",
     body: "Dawn patrol OOTD 🌅 Desert mornings hit different. New moisture-wicking set + cap and I'm ready before the heat rolls in. Who else is a sunrise player?",
-    media: [photo("ootd", "🧢", "Sunrise Session")],
+    media: [pic("ootd", 2)],
     likes: 27,
     comments: [{ by: "hana_t", body: "The lighting in this is unreal 😍" }],
   },
@@ -437,7 +432,7 @@ const P: SeedPost[] = [
     by: "lucia_rally",
     type: "PHOTO",
     body: "My first tournament medal! 🥉 Third in the beginner bracket in Madrid. Two months ago I'd never held a paddle. This community made it happen — gracias a todos 💚",
-    media: [photo("trophy", "🥉", "First Medal!")],
+    media: [pic("trophy", 0)],
     likes: 45,
     comments: [
       { by: "sofia_smash", body: "From zero to podium — incredible! 🎉" },
@@ -507,7 +502,7 @@ const P: SeedPost[] = [
     by: "tomas_topspin",
     type: "PHOTO",
     body: "Sunset session in Prague 🌇 Empty courts, perfect temps, and a solid two hours of drilling drops. Sometimes the best games are just you, a bucket of balls, and quiet. 🧘",
-    media: [photo("court", "🌇", "Sunset Drills")],
+    media: [pic("court", 2)],
     likes: 24,
     comments: [{ by: "chloe_court", body: "This is the peaceful pickle content I'm here for 🙏" }],
   },
