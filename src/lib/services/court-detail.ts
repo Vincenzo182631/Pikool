@@ -70,6 +70,7 @@ export async function getCourtDetail(
     ratingAvg: court.ratingAvg,
     ratingCount: court.ratingCount,
     verified: court.verified,
+    pricePerHour: court.pricePerHour,
     photos: court.photos.map((p) => p.url),
     occupancy: players.length,
     busyLevel: busyLevel(players.length),

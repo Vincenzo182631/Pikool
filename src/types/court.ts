@@ -15,6 +15,7 @@ export interface CourtListItem {
   ratingCount: number;
   reviewCount: number;
   verified: boolean;
+  pricePerHour: number | null;
   thumbnailUrl: string | null;
   occupancy: number;
   busyLevel: BusyLevel;
@@ -63,6 +64,7 @@ export interface CourtDetail {
   ratingAvg: number;
   ratingCount: number;
   verified: boolean;
+  pricePerHour: number | null;
   photos: string[];
   occupancy: number;
   busyLevel: BusyLevel;

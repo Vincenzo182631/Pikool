@@ -353,6 +353,8 @@ model Court {
   country          String?
   phone            String?
   website          String?
+  /// Hourly court fee in whole currency units (USD). Null = price on request.
+  pricePerHour     Int?
   surface          CourtSurface     @default(ACRYLIC)
   environment      CourtEnvironment @default(OUTDOOR)
   hasLighting      Boolean          @default(false)

@@ -76,6 +76,7 @@ export const GET = route(async (req: Request) => {
       ratingCount: c.ratingCount,
       reviewCount: c._count.reviews,
       verified: c.verified,
+      pricePerHour: c.pricePerHour,
       thumbnailUrl: c.photos[0]?.url ?? null,
       occupancy: count,
       busyLevel: busyLevel(count),

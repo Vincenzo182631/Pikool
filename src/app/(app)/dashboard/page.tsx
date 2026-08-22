@@ -1,24 +1,28 @@
 import Link from "next/link";
+import Image from "next/image";
 import { redirect } from "next/navigation";
-import { formatDistanceToNow } from "date-fns";
-import { ArrowRight, MapPin, Users, Sparkles, Bell, Activity, UserPen, type LucideIcon } from "lucide-react";
-import { IconTile, type TileTone } from "@/components/ui/icon-tile";
+import { Bell, Sparkles, ArrowRight } from "lucide-react";
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth/session";
 import { getFullUser, serializeMe } from "@/lib/services/user";
-import { activityLabel } from "@/lib/activity";
-import { PageHeader } from "@/components/layout/page-header";
-import { StatTile } from "@/components/ui/stat-tile";
-import { RatingBadge } from "@/components/ui/rating-badge";
-import { Progress } from "@/components/ui/progress";
+import { CHECKIN_TTL_HOURS } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Avatar } from "@/components/ui/avatar";
-import { initials } from "@/lib/utils";
+import { IconButton } from "@/components/ui/icon-button";
+import { SectionTitle } from "@/components/ui/editorial";
+import { Progress } from "@/components/ui/progress";
+import { HomeHero } from "@/components/home/home-hero";
+import { StatusCard } from "@/components/home/status-card";
 
 export const dynamic = "force-dynamic";
 
-export default async function DashboardPage() {
+/** Editorial imagery for the featured-events rail. */
+const EVENT_RAIL = [
+  { name: "Summer Slam", date: "Jun 22", img: "/editorial/event_camp.jpg" },
+  { name: "City Open", date: "Jul 08", img: "/editorial/event_tournament.jpg" },
+  { name: "Doubles Cup", date: "Aug 14", img: "/editorial/event_doubles.jpg" },
+];
+
+export default async function HomePage() {
   const current = await getCurrentUser();
   if (!current) redirect("/login");
   const full = await getFullUser(current.id);
@@ -26,200 +30,127 @@ export default async function DashboardPage() {
   const me = serializeMe(full);
   const p = me.profile;
 
-  const [activity, notifications] = await Promise.all([
-    db.activityLog.findMany({
-      where: { userId: me.id },
-      orderBy: { createdAt: "desc" },
-      take: 6,
+  const busyCutoff = new Date(Date.now() - CHECKIN_TTL_HOURS * 3600_000);
+
+  const [featured, totalCourts, busyCourts, nextMatch] = await Promise.all([
+    db.court.findFirst({
+      where: { verified: true },
+      orderBy: [{ ratingAvg: "desc" }, { ratingCount: "desc" }],
+      select: { id: true, name: true, city: true, country: true, ratingAvg: true, ratingCount: true },
     }),
-    db.notification.findMany({
-      where: { userId: me.id },
-      orderBy: { createdAt: "desc" },
-      take: 5,
+    db.court.count({ where: { verified: true } }),
+    db.checkIn.findMany({
+      where: { createdAt: { gt: busyCutoff } },
+      select: { courtId: true },
+      distinct: ["courtId"],
+    }),
+    db.matchRequest.findFirst({
+      where: { status: "ACCEPTED", OR: [{ fromUserId: me.id }, { toUserId: me.id }] },
+      orderBy: { proposedAt: "asc" },
+      select: { proposedAt: true },
     }),
   ]);
 
-  const winPct = p && p.gamesPlayed > 0 ? Math.round((p.wins / p.gamesPlayed) * 100) : 0;
-  const memberSince = new Date(me.createdAt).toLocaleDateString(undefined, {
-    month: "long",
-    year: "numeric",
-  });
+  // "Courts available" = verified courts with no live check-in right now.
+  const courtsAvailable = Math.max(0, totalCourts - busyCourts.length);
+
+  const nextMatchLabel = nextMatch?.proposedAt
+    ? nextMatch.proposedAt
+        .toLocaleDateString("en-US", { month: "short", day: "2-digit" })
+        .toUpperCase()
+    : "—";
+
+  const firstName = me.firstName?.trim() || p?.username || "player";
+  const location = [featured?.city, featured?.country].filter(Boolean).join(", ") || "New York, US";
 
   return (
-    <div className="mx-auto max-w-5xl">
-      <PageHeader
-        title={me.firstName ? `Welcome back, ${me.firstName}` : "Welcome to PicklePlay"}
-        description="Your pickleball control center."
-        action={
-          <Button asChild variant="outline">
-            <Link href="/profile/edit">
-              <UserPen /> Edit profile
-            </Link>
-          </Button>
-        }
+    <div className="mx-auto max-w-2xl">
+      {/* Greeting */}
+      <header className="mb-5 flex items-start justify-between gap-3">
+        <div>
+          <p className="mb-1.5 text-sm text-muted-foreground">Hi, {firstName} 👋</p>
+          <h1 className="text-[26px] font-medium leading-none tracking-[-0.02em] text-ink">
+            Explore the
+          </h1>
+          <p className="font-display mt-0.5 text-[42px] font-extrabold leading-none tracking-[-0.03em] text-ink">
+            Pickleball
+          </p>
+        </div>
+        <IconButton asChild aria-label="Notifications">
+          <Link href="/notifications">
+            <Bell className="size-5" strokeWidth={1.8} />
+          </Link>
+        </IconButton>
+      </header>
+
+      <HomeHero
+        featuredCourtId={featured?.id ?? null}
+        featuredName={featured?.name ?? "Popular Courts"}
+        location={location}
+        rating={featured && featured.ratingCount > 0 ? Number(featured.ratingAvg.toFixed(1)) : null}
       />
 
-      {/* Profile completion */}
+      {/* Finish your profile */}
       {me.profileCompletion < 100 && (
-        <Card className="mb-6 border-primary/30 bg-accent/40">
-          <CardContent className="p-5">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <div className="flex items-center gap-3">
-                <Sparkles className="size-5 text-primary" />
-                <div>
-                  <p className="font-medium">Complete your profile</p>
-                  <p className="text-sm text-muted-foreground">
-                    A complete profile gets you better matches.
-                  </p>
-                </div>
+        <div className="mt-5 rounded-[20px] bg-card p-4 shadow-card">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-2.5">
+              <Sparkles className="size-4 text-ink" strokeWidth={1.8} />
+              <div>
+                <p className="text-sm font-semibold text-ink">Complete your profile</p>
+                <p className="text-xs text-muted-foreground">
+                  A complete profile gets you better matches.
+                </p>
               </div>
-              <Button asChild size="sm">
-                <Link href={p ? "/profile/edit" : "/onboarding"}>
-                  {p ? "Finish profile" : "Start onboarding"} <ArrowRight />
-                </Link>
-              </Button>
             </div>
-            <div className="mt-4 flex items-center gap-3">
-              <Progress value={me.profileCompletion} className="flex-1" />
-              <span className="text-sm font-semibold tabular-nums">
-                {me.profileCompletion}%
-              </span>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Player mini card */}
-      {p && (
-        <Card className="mb-6">
-          <CardContent className="flex flex-wrap items-center gap-4 p-5">
-            <Avatar src={p.avatarUrl} fallback={initials(me.firstName, me.lastName)} size={64} />
-            <div className="flex-1">
-              <div className="flex items-center gap-2">
-                <h2 className="text-lg font-semibold">
-                  {me.firstName} {me.lastName}
-                </h2>
-                <RatingBadge level={p.skillLevel} />
-              </div>
-              <p className="text-sm text-muted-foreground">
-                @{p.username}
-                {p.city ? ` · ${p.city}` : ""} · Member since {memberSince}
-              </p>
-            </div>
-            <Button asChild variant="outline">
-              <Link href={`/players/${p.username}`}>View player card</Link>
+            <Button asChild size="sm">
+              <Link href={p ? "/profile/edit" : "/onboarding"}>
+                {p ? "Finish" : "Start"} <ArrowRight />
+              </Link>
             </Button>
-          </CardContent>
-        </Card>
+          </div>
+          <div className="mt-3 flex items-center gap-3">
+            <Progress value={me.profileCompletion} className="flex-1" />
+            <span className="text-xs font-bold tabular-nums text-ink">{me.profileCompletion}%</span>
+          </div>
+        </div>
       )}
 
-      {/* Statistics */}
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <StatTile label="Rating" value={p ? p.ratingValue.toFixed(1) : "—"} />
-        <StatTile label="Games" value={p?.gamesPlayed ?? 0} />
-        <StatTile
-          label="Win %"
-          value={`${winPct}%`}
-          hint={p ? `${p.wins}W · ${p.losses}L` : undefined}
-        />
-        <StatTile label="Streak" value={p?.currentStreak ?? 0} hint="current" />
+      <div className="mt-5">
+        <StatusCard courtsAvailable={courtsAvailable} nextMatchLabel={nextMatchLabel} />
       </div>
 
-      {/* Quick actions */}
-      <h3 className="mb-3 mt-8 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-        Quick actions
-      </h3>
-      <div className="grid gap-4 sm:grid-cols-2">
-        <QuickAction
-          href="/map"
-          icon={MapPin}
-          tone="gray"
-          title="Find a court"
-          body="See courts near you with live busy levels and check-ins."
-        />
-        <QuickAction
-          href="/matchmaking"
-          icon={Users}
-          tone="gray"
-          title="Find players"
-          body="Match with nearby players at your level and start a game."
-        />
-      </div>
-
-      {/* Activity + notifications */}
-      <div className="mt-8 grid gap-4 lg:grid-cols-2">
-        <Card>
-          <CardContent className="p-5">
-            <h3 className="mb-4 flex items-center gap-2 text-sm font-semibold">
-              <Activity className="size-4 text-muted-foreground" /> Recent activity
-            </h3>
-            {activity.length === 0 ? (
-              <p className="text-sm text-muted-foreground">No activity yet.</p>
-            ) : (
-              <ul className="space-y-3">
-                {activity.map((a) => (
-                  <li key={a.id} className="flex items-start justify-between gap-3 text-sm">
-                    <span>{activityLabel(a.type, a.message)}</span>
-                    <span className="shrink-0 text-xs text-muted-foreground">
-                      {formatDistanceToNow(a.createdAt, { addSuffix: true })}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-5">
-            <h3 className="mb-4 flex items-center gap-2 text-sm font-semibold">
-              <Bell className="size-4 text-muted-foreground" /> Notifications
-            </h3>
-            {notifications.length === 0 ? (
-              <p className="text-sm text-muted-foreground">You&apos;re all caught up.</p>
-            ) : (
-              <ul className="space-y-3">
-                {notifications.map((n) => (
-                  <li key={n.id} className="text-sm">
-                    <p className="font-medium">{n.title}</p>
-                    {n.body && <p className="text-muted-foreground">{n.body}</p>}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </CardContent>
-        </Card>
-      </div>
+      {/* Featured events rail */}
+      <section className="mt-7">
+        <SectionTitle
+          action={
+            <Link
+              href="/events"
+              className="text-[13px] font-semibold text-muted-foreground hover:text-ink"
+            >
+              See all
+            </Link>
+          }
+        >
+          Featured Events
+        </SectionTitle>
+        <div className="no-scrollbar -mx-5 flex gap-3 overflow-x-auto px-5 pb-1 sm:mx-0 sm:px-0">
+          {EVENT_RAIL.map((e) => (
+            <Link
+              key={e.name}
+              href="/events"
+              className="press relative h-[190px] w-40 shrink-0 overflow-hidden rounded-[18px] shadow-soft"
+            >
+              <Image src={e.img} alt="" fill sizes="160px" className="object-cover" />
+              <div className="scrim-b absolute inset-0" />
+              <div className="absolute inset-x-3 bottom-3 text-white">
+                <p className="text-[11px] opacity-85">{e.date}</p>
+                <p className="font-display text-xl font-bold leading-tight">{e.name}</p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
     </div>
-  );
-}
-
-function QuickAction({
-  href,
-  icon,
-  tone,
-  title,
-  body,
-}: {
-  href: string;
-  icon: LucideIcon;
-  tone: TileTone;
-  title: string;
-  body: string;
-}) {
-  return (
-    <Link
-      href={href}
-      className="group flex items-start gap-4 rounded-3xl bg-card shadow-card p-5 transition-transform hover:-translate-y-1"
-    >
-      <IconTile icon={icon} tone={tone} size="md" />
-      <div className="flex-1">
-        <p className="flex items-center gap-1 font-semibold">
-          {title}
-          <ArrowRight className="size-4 opacity-0 transition-opacity group-hover:opacity-100" />
-        </p>
-        <p className="mt-0.5 text-sm text-muted-foreground">{body}</p>
-      </div>
-    </Link>
   );
 }

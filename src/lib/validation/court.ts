@@ -46,6 +46,7 @@ export const adminUpdateCourtSchema = z.object({
   amenities: z.array(z.string().max(40)).max(20).optional(),
   phone: z.string().max(40).nullable().optional(),
   website: z.string().max(300).nullable().optional(),
+  pricePerHour: z.number().int().min(0).max(1000).nullable().optional(),
   verified: z.boolean().optional(),
 });
 
