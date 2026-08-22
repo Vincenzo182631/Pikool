@@ -12,12 +12,17 @@ import { usePlayers, useRequests, useMyAvailability } from "@/hooks/use-matchmak
 import { BroadcastPanel } from "@/components/matchmaking/broadcast-panel";
 import { RequestsPanel } from "@/components/matchmaking/requests-panel";
 import { AvailablePlayerCard } from "@/components/matchmaking/available-player-card";
+import { SeasonStats } from "@/components/matchmaking/season-stats";
 
 const FORMAT_LABEL: Record<string, string> = { SINGLES: "Singles", DOUBLES: "Doubles", MIXED: "Mixed" };
 const selectClass =
   "h-9 rounded-2xl border border-border/60 bg-secondary/60 px-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring";
 
-export function MatchmakingClient() {
+export function MatchmakingClient({
+  stats,
+}: {
+  stats: { matches: number; wins: number; rating: number | null };
+}) {
   const [coords, setCoords] = React.useState<{ lat: number; lng: number } | null>(null);
   const [locating, setLocating] = React.useState(false);
   const [format, setFormat] = React.useState("");
@@ -64,9 +69,11 @@ export function MatchmakingClient() {
 
   return (
     <div className="mx-auto max-w-2xl">
-      <PageHeader title="Matchmaking" description="Find nearby, compatible players and turn intent into a game." />
+      <PageHeader eyebrow="This season" title="My Matches" />
 
       <div className="space-y-5">
+        <SeasonStats matches={stats.matches} wins={stats.wins} rating={stats.rating} />
+
         <BroadcastPanel
           coords={coords}
           locating={locating}
@@ -79,7 +86,7 @@ export function MatchmakingClient() {
         {/* Nearby players */}
         <section>
           <div className="mb-3 flex items-center justify-between gap-2">
-            <h2 className="flex items-center gap-2 font-semibold">
+            <h2 className="font-display flex items-center gap-2 text-[22px] font-bold text-ink">
               <IconTile icon={Users} tone="gray" size="sm" /> Available nearby
             </h2>
           </div>

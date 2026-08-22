@@ -61,7 +61,7 @@ export default async function PlayerPage({
               className="h-full w-full"
               style={{
                 background:
-                  "linear-gradient(120deg, color-mix(in srgb, var(--brand-500) 55%, transparent), color-mix(in srgb, var(--brand-700) 65%, transparent))",
+                  "linear-gradient(120deg, #1E5F5B 0%, #2A2F31 100%)",
               }}
             />
           )}
@@ -93,7 +93,7 @@ export default async function PlayerPage({
 
           <div className="mt-3">
             <div className="flex flex-wrap items-center gap-2">
-              <h1 className="text-xl font-bold tracking-tight">
+              <h1 className="font-display text-[22px] font-extrabold text-ink">
                 {profile.displayName || fullName || `@${profile.username}`}
               </h1>
               <RatingBadge level={profile.skillLevel} />
@@ -149,7 +149,7 @@ export default async function PlayerPage({
 
       {/* Badges */}
       <div className="mt-4 rounded-3xl bg-card shadow-card p-5">
-        <h2 className="mb-3 text-sm font-semibold">Badges &amp; achievements</h2>
+        <h2 className="font-display mb-3 text-lg font-bold text-ink">Achievements</h2>
         {profile.user.badges.length === 0 ? (
           <p className="text-sm text-muted-foreground">
             No badges yet — play matches and check in to courts to earn them.
@@ -172,7 +172,7 @@ export default async function PlayerPage({
 
       {profile.bio && (
         <div className="mt-4 rounded-3xl bg-card shadow-card p-5">
-          <h2 className="mb-1 text-sm font-semibold">About</h2>
+          <h2 className="font-display mb-1 text-lg font-bold text-ink">About</h2>
           <p className="text-sm text-muted-foreground">{profile.bio}</p>
         </div>
       )}

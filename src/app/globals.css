@@ -130,11 +130,6 @@
   --color-ink-2: var(--ink-2);
   --color-star: var(--star);
 
-  --radius-lg: var(--radius);
-  --radius-md: calc(var(--radius) - 0.25rem);
-  --radius-sm: calc(var(--radius) - 0.5rem);
-  --radius-xl: calc(var(--radius) + 0.25rem);
-
   --font-sans: var(--font-dm-sans), "DM Sans", "Inter", -apple-system, system-ui, sans-serif;
   --font-serif: var(--font-fraunces), "Fraunces", "Instrument Serif", Georgia, serif;
 }
