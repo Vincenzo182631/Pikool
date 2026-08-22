@@ -4,7 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { LogOut, Search, Settings, ShieldCheck } from "lucide-react";
-import { NAV_ITEMS, APP_NAME } from "@/lib/constants";
+import { NAV_ITEMS, PRIMARY_TABS, tabForPath, APP_NAME } from "@/lib/constants";
 import { cn, initials } from "@/lib/utils";
 import { useMe, useLogout, type Me } from "@/hooks/use-auth";
 import { Avatar } from "@/components/ui/avatar";
@@ -37,13 +37,13 @@ export function AppShell({
   return (
     <div className="min-h-dvh md:grid md:grid-cols-[240px_1fr]">
       {/* Sidebar (desktop) */}
-      <aside className="sticky top-0 hidden h-dvh flex-col border-r border-border bg-card/50 md:flex">
+      <aside className="sticky top-0 hidden h-dvh flex-col border-r border-border bg-card/40 md:flex">
         <div className="flex h-16 items-center gap-2 px-5">
           <Link href="/dashboard" className="flex items-center gap-2">
-            <span className="inline-flex size-8 items-center justify-center rounded-2xl grad-primary text-white clay-sm">
+            <span className="inline-flex size-8 items-center justify-center rounded-xl bg-ink text-primary">
               <span className="text-sm font-black">P</span>
             </span>
-            <span className="font-bold tracking-tight">{APP_NAME}</span>
+            <span className="font-display text-lg font-extrabold text-ink">{APP_NAME}</span>
           </Link>
         </div>
         <nav className="flex-1 space-y-1 px-3 py-2">
@@ -56,8 +56,8 @@ export function AppShell({
                 className={cn(
                   "flex items-center gap-3 rounded-2xl px-3 py-2 text-sm font-semibold transition-all",
                   active
-                    ? "bg-primary text-primary-foreground clay-sm"
-                    : "text-muted-foreground hover:bg-secondary hover:text-foreground",
+                    ? "bg-primary text-ink"
+                    : "text-muted-foreground hover:bg-secondary hover:text-ink",
                 )}
               >
                 <item.icon className="size-4.5" />
@@ -92,10 +92,10 @@ export function AppShell({
         <header className="sticky top-0 z-20 flex h-16 items-center gap-3 border-b border-border bg-background/80 px-4 backdrop-blur sm:px-6">
           <div className="flex flex-1 items-center gap-2">
             <div className="relative hidden max-w-md flex-1 sm:block">
-              <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+              <Search className="pointer-events-none absolute left-4 top-1/2 size-[18px] -translate-y-1/2 text-muted-foreground" strokeWidth={1.8} />
               <input
                 placeholder="Search players, courts, clubs…"
-                className="h-10 w-full rounded-full border border-border/60 bg-secondary/60 pl-9 pr-4 text-sm outline-none clay-inset focus-visible:ring-2 focus-visible:ring-ring"
+                className="h-[46px] w-full rounded-full bg-card pl-10 pr-4 text-sm text-ink shadow-icon outline-none focus-visible:ring-2 focus-visible:ring-ring"
               />
             </div>
           </div>
@@ -123,33 +123,33 @@ export function AppShell({
           </Button>
         </header>
 
-        <main className="flex-1 px-4 py-6 sm:px-6 lg:px-8">{children}</main>
+        {/* pb clears the floating pill on mobile (handoff: 120px clearance) */}
+        <main className="flex-1 px-5 py-6 pb-32 sm:px-6 md:pb-10 lg:px-8">{children}</main>
 
-        {/* Bottom nav (mobile) */}
-        <nav className="sticky bottom-0 z-20 grid grid-cols-5 border-t border-border bg-background/90 backdrop-blur md:hidden">
-          {NAV_ITEMS.slice(0, 5).map((item) => {
-            const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  "flex flex-col items-center gap-1 py-2.5 text-[11px] font-semibold",
-                  active ? "text-primary" : "text-muted-foreground",
-                )}
-              >
-                <span
+        {/* Floating pill nav (mobile) */}
+        <nav
+          aria-label="Primary"
+          className="pointer-events-none fixed inset-x-0 bottom-[22px] z-40 flex justify-center md:hidden"
+        >
+          <div className="nav-blur pointer-events-auto inline-flex gap-2 rounded-full p-1.5 shadow-nav">
+            {PRIMARY_TABS.map((item) => {
+              const active = tabForPath(pathname) === item.href;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  aria-label={item.label}
+                  aria-current={active ? "page" : undefined}
                   className={cn(
-                    "grid size-9 place-items-center rounded-2xl transition-all",
-                    active && "bg-primary text-primary-foreground clay-sm",
+                    "grid size-[46px] place-items-center rounded-full text-ink press press-icon",
+                    active ? "bg-primary shadow-[0_4px_12px_rgba(184,218,30,0.4)]" : "opacity-40",
                   )}
                 >
-                  <item.icon className="size-5" />
-                </span>
-                {item.label}
-              </Link>
-            );
-          })}
+                  <item.icon className="size-5" strokeWidth={1.8} />
+                </Link>
+              );
+            })}
+          </div>
         </nav>
       </div>
     </div>

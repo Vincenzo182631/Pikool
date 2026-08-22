@@ -8,6 +8,7 @@ import {
   Trophy,
   Store,
   ShoppingBag,
+  User,
   type LucideIcon,
 } from "lucide-react";
 
@@ -24,16 +25,37 @@ export interface NavItem {
 }
 
 export const NAV_ITEMS: NavItem[] = [
-  { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { label: "Map", href: "/map", icon: Map },
+  { label: "Home", href: "/dashboard", icon: LayoutDashboard },
+  { label: "Courts", href: "/courts", icon: Map },
+  { label: "Matches", href: "/matchmaking", icon: Trophy },
   { label: "Feed", href: "/feed", icon: Newspaper },
-  { label: "Matchmaking", href: "/matchmaking", icon: Users },
+  { label: "Players", href: "/players", icon: Users },
   { label: "Messages", href: "/messages", icon: MessageSquare },
   { label: "Events", href: "/events", icon: CalendarDays },
-  { label: "Tournaments", href: "/tournaments", icon: Trophy },
   { label: "Clubs", href: "/clubs", icon: Store },
   { label: "Marketplace", href: "/marketplace", icon: ShoppingBag },
 ];
+
+/**
+ * The four tabs of the floating mobile nav (design handoff §BottomNav).
+ * Other routes map onto one of these for active state — see `tabForPath`.
+ */
+export const PRIMARY_TABS: NavItem[] = [
+  { label: "Home", href: "/dashboard", icon: LayoutDashboard },
+  { label: "Courts", href: "/courts", icon: CalendarDays },
+  { label: "Matches", href: "/matchmaking", icon: Trophy },
+  { label: "Profile", href: "/profile", icon: User },
+];
+
+/** Which bottom-nav tab owns a given pathname. */
+export function tabForPath(pathname: string): string {
+  if (pathname.startsWith("/courts") || pathname.startsWith("/map") || pathname.startsWith("/booking") || pathname.startsWith("/search") || pathname.startsWith("/events")) {
+    return "/courts";
+  }
+  if (pathname.startsWith("/matchmaking") || pathname.startsWith("/matches")) return "/matchmaking";
+  if (pathname.startsWith("/profile") || pathname.startsWith("/players") || pathname.startsWith("/settings")) return "/profile";
+  return "/dashboard";
+}
 
 /** Skill level → display metadata (see docs/12-player-rating.md). */
 export const SKILL_META: Record<

@@ -14,7 +14,7 @@ import { COURT_SURFACES, COURT_ENVIRONMENTS } from "@/lib/validation/court";
 import type { CourtListItem } from "@/types/court";
 
 const selectClass =
-  "h-9 rounded-2xl border border-border/60 bg-secondary/60 clay-inset px-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring";
+  "h-9 rounded-2xl border border-border/60 bg-secondary/60 px-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring";
 
 export function CourtsExplorer() {
   const [q, setQ] = React.useState("");
@@ -101,8 +101,8 @@ export function CourtsExplorer() {
         <button
           type="button"
           onClick={() => setLighting((v) => !v)}
-          className={`h-9 rounded-full px-3 text-sm font-semibold clay-pressable ${
-            lighting ? "bg-primary text-primary-foreground clay-sm" : "bg-secondary/60 text-muted-foreground clay-inset"
+          className={`h-9 rounded-full px-3 text-sm font-semibold press ${
+            lighting ? "bg-primary text-primary-foreground shadow-subtle" : "bg-secondary/60 text-muted-foreground"
           }`}
         >
           Lit

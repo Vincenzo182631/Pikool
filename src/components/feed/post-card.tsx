@@ -100,7 +100,7 @@ export function PostCard({ post }: { post: PostItem }) {
   }
 
   return (
-    <article id={post.id} className="rounded-3xl bg-card clay p-4">
+    <article id={post.id} className="rounded-3xl bg-card shadow-card p-4">
       {/* header */}
       <div className="flex items-start gap-3">
         <Avatar src={post.author.avatarUrl} fallback={post.author.initials} size={40} />
@@ -117,12 +117,7 @@ export function PostCard({ post }: { post: PostItem }) {
             <span className="text-xs text-muted-foreground">· {formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })}</span>
           </div>
           {meta && (
-            <span
-              className={cn(
-                "mt-1 inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold clay-sm",
-                meta.tone,
-              )}
-            >
+            <span className="mt-1 inline-flex items-center gap-1 rounded-full bg-ink/[0.06] px-2.5 py-0.5 text-[11px] font-bold text-ink">
               <meta.icon className="size-3" />
               {meta.label}
             </span>
@@ -160,7 +155,7 @@ export function PostCard({ post }: { post: PostItem }) {
           <button
             type="button"
             onClick={() => setShowComments(true)}
-            className="inline-flex shrink-0 items-center gap-1.5 rounded-full grad-cta px-4 py-1.5 text-sm font-semibold text-[#3b1e8f] clay-sm clay-pressable"
+            className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-primary px-4 py-1.5 text-sm font-semibold text-[#3b1e8f] shadow-subtle press"
           >
             Say hi 👋
           </button>

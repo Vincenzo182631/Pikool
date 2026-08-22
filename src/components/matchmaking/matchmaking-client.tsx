@@ -5,7 +5,7 @@ import { Users, SlidersHorizontal, MapPinOff } from "lucide-react";
 import { toast } from "sonner";
 import { PageHeader } from "@/components/layout/page-header";
 import { Button } from "@/components/ui/button";
-import { ClayIcon } from "@/components/ui/clay-icon";
+import { IconTile } from "@/components/ui/icon-tile";
 import { PLAY_FORMATS, SKILL_LEVELS } from "@/lib/validation/user";
 import { SKILL_META } from "@/lib/constants";
 import { usePlayers, useRequests, useMyAvailability } from "@/hooks/use-matchmaking";
@@ -15,7 +15,7 @@ import { AvailablePlayerCard } from "@/components/matchmaking/available-player-c
 
 const FORMAT_LABEL: Record<string, string> = { SINGLES: "Singles", DOUBLES: "Doubles", MIXED: "Mixed" };
 const selectClass =
-  "h-9 rounded-2xl border border-border/60 bg-secondary/60 clay-inset px-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring";
+  "h-9 rounded-2xl border border-border/60 bg-secondary/60 px-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring";
 
 export function MatchmakingClient() {
   const [coords, setCoords] = React.useState<{ lat: number; lng: number } | null>(null);
@@ -80,7 +80,7 @@ export function MatchmakingClient() {
         <section>
           <div className="mb-3 flex items-center justify-between gap-2">
             <h2 className="flex items-center gap-2 font-semibold">
-              <ClayIcon icon={Users} tone="violet" size="sm" /> Available nearby
+              <IconTile icon={Users} tone="gray" size="sm" /> Available nearby
             </h2>
           </div>
 
@@ -124,7 +124,7 @@ export function MatchmakingClient() {
 
           {!coords ? (
             <div className="rounded-3xl border border-dashed border-border p-10 text-center">
-              <ClayIcon icon={MapPinOff} tone="sky" size="lg" className="mx-auto mb-3" />
+              <IconTile icon={MapPinOff} tone="gray" size="lg" className="mx-auto mb-3" />
               <p className="font-medium">Share your location to find players</p>
               <p className="mb-4 text-sm text-muted-foreground">We&apos;ll show available players closest to you first.</p>
               <Button onClick={locate} loading={locating}>
@@ -139,7 +139,7 @@ export function MatchmakingClient() {
             </div>
           ) : players.length === 0 ? (
             <div className="rounded-3xl border border-dashed border-border p-10 text-center">
-              <ClayIcon icon={Users} tone="violet" size="lg" className="mx-auto mb-3" />
+              <IconTile icon={Users} tone="gray" size="lg" className="mx-auto mb-3" />
               <p className="font-medium">No one&apos;s available right now</p>
               <p className="text-sm text-muted-foreground">
                 Broadcast your own availability above — nearby players get notified when you do.

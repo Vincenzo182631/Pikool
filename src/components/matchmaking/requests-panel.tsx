@@ -38,7 +38,7 @@ function RequestRow({ req }: { req: MatchRequestItem }) {
   }
 
   return (
-    <div className="flex items-center gap-3 rounded-3xl bg-card clay p-3">
+    <div className="flex items-center gap-3 rounded-3xl bg-card shadow-card p-3">
       <Link href={req.party.username ? `/players/${req.party.username}` : "#"} className="shrink-0">
         <Avatar src={req.party.avatarUrl} fallback={req.party.initials} size={40} />
       </Link>

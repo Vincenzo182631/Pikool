@@ -10,17 +10,17 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ClayIcon } from "@/components/ui/clay-icon";
+import { IconTile } from "@/components/ui/icon-tile";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { APP_NAME, APP_TAGLINE } from "@/lib/constants";
 
 const FEATURES = [
-  { icon: MapPin, tone: "sky", title: "Discover courts", body: "The definitive map of courts, stores, coaches, and clubs near you — with live busy levels." },
-  { icon: Users, tone: "violet", title: "Find players", body: "Match with nearby players at your level. Tap “I'm Available” and get playing today." },
-  { icon: CalendarDays, tone: "coral", title: "Organize games", body: "Open play, clinics, leagues and social games — RSVP, waitlists, and calendars." },
-  { icon: TrendingUp, tone: "lime", title: "Track progress", body: "A pro-style player card: skill rating, record, streaks, achievements and badges." },
-  { icon: Trophy, tone: "sunset", title: "Compete", body: "Full tournaments: registration, brackets, live scores, results and rankings." },
-  { icon: MessageSquare, tone: "cyan", title: "Stay connected", body: "Realtime chat, clubs, and a pickleball-first feed built for the community." },
+  { icon: MapPin, tone: "gray", title: "Discover courts", body: "The definitive map of courts, stores, coaches, and clubs near you — with live busy levels." },
+  { icon: Users, tone: "accent", title: "Find players", body: "Match with nearby players at your level. Tap “I'm Available” and get playing today." },
+  { icon: CalendarDays, tone: "gray", title: "Organize games", body: "Open play, clinics, leagues and social games — RSVP, waitlists, and calendars." },
+  { icon: TrendingUp, tone: "accent", title: "Track progress", body: "A pro-style player card: skill rating, record, streaks, achievements and badges." },
+  { icon: Trophy, tone: "gray", title: "Compete", body: "Full tournaments: registration, brackets, live scores, results and rankings." },
+  { icon: MessageSquare, tone: "gray", title: "Stay connected", body: "Realtime chat, clubs, and a pickleball-first feed built for the community." },
 ] as const;
 
 export default function LandingPage() {
@@ -55,8 +55,8 @@ export default function LandingPage() {
             <Badge variant="accent" className="mb-5">
               🎾 Now in early access
             </Badge>
-            <h1 className="text-balance text-4xl font-extrabold tracking-tight sm:text-6xl">
-              <span className="text-gradient">{APP_TAGLINE}</span>
+            <h1 className="font-display text-balance text-[44px] font-extrabold leading-[0.95] tracking-[-0.03em] text-ink sm:text-[64px]">
+              {APP_TAGLINE}
             </h1>
             <p className="mx-auto mt-5 max-w-2xl text-balance text-lg text-muted-foreground">
               {APP_NAME} is the all-in-one home for pickleball — discover courts,
@@ -82,10 +82,10 @@ export default function LandingPage() {
             {FEATURES.map(({ icon: Icon, tone, title, body }) => (
               <div
                 key={title}
-                className="group rounded-3xl bg-card clay p-6 transition-transform hover:-translate-y-1"
+                className="group rounded-3xl bg-card shadow-card p-6 transition-transform hover:-translate-y-1"
               >
-                <ClayIcon icon={Icon} tone={tone} size="lg" className="mb-4" />
-                <h3 className="text-base font-semibold">{title}</h3>
+                <IconTile icon={Icon} tone={tone} size="lg" className="mb-4" />
+                <h3 className="font-display text-lg font-bold text-ink">{title}</h3>
                 <p className="mt-1.5 text-sm text-muted-foreground">{body}</p>
               </div>
             ))}
@@ -95,7 +95,7 @@ export default function LandingPage() {
         {/* CTA */}
         <section className="mx-auto max-w-6xl px-5 pb-24">
           <div className="glass overflow-hidden rounded-3xl border border-border p-10 text-center shadow-sm">
-            <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
+            <h2 className="font-display text-[30px] font-extrabold tracking-[-0.03em] text-ink sm:text-4xl">
               Ready to play?
             </h2>
             <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
@@ -124,7 +124,7 @@ export default function LandingPage() {
 
 function Logo() {
   return (
-    <span className="inline-flex size-8 items-center justify-center rounded-2xl grad-primary text-white clay-sm">
+    <span className="inline-flex size-8 items-center justify-center rounded-2xl bg-primary text-white shadow-subtle">
       <span className="text-sm font-black">P</span>
     </span>
   );

@@ -2,7 +2,7 @@
 
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Newspaper } from "lucide-react";
-import { ClayIcon } from "@/components/ui/clay-icon";
+import { IconTile } from "@/components/ui/icon-tile";
 import { apiPage } from "@/lib/api-client";
 import { PageHeader } from "@/components/layout/page-header";
 import { PostComposer } from "@/components/feed/post-composer";
@@ -34,7 +34,7 @@ export default function FeedPage() {
           ))
         ) : posts.length === 0 ? (
           <div className="rounded-3xl border border-dashed border-border p-10 text-center">
-            <ClayIcon icon={Newspaper} tone="violet" size="lg" className="mx-auto mb-3" />
+            <IconTile icon={Newspaper} tone="gray" size="lg" className="mx-auto mb-3" />
             <p className="font-medium">The feed is quiet</p>
             <p className="text-sm text-muted-foreground">Be the first to post a tip, result, or poll above.</p>
           </div>

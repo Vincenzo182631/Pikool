@@ -19,7 +19,7 @@ import { Field } from "@/components/ui/field";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
-import { ClayIcon } from "@/components/ui/clay-icon";
+import { IconTile } from "@/components/ui/icon-tile";
 import { ImageUpload } from "@/components/upload/image-upload";
 import { api, ApiClientError } from "@/lib/api-client";
 import { PLAY_FORMATS, DOMINANT_HANDS, SKILL_LEVELS, AVAILABILITY_OPTIONS } from "@/lib/validation/user";
@@ -149,7 +149,7 @@ export function OnboardingWizard({ me }: { me: Me | null }) {
         <Progress value={((step + 1) / total) * 100} />
       </div>
 
-      <div className="relative overflow-hidden rounded-3xl bg-card clay p-6 shadow-sm sm:p-8">
+      <div className="relative overflow-hidden rounded-3xl bg-card shadow-card p-6 shadow-sm sm:p-8">
         <AnimatePresence mode="wait" custom={dir}>
           <motion.div
             key={current}
@@ -205,7 +205,7 @@ export function OnboardingWizard({ me }: { me: Me | null }) {
                             <span
                               className={cn(
                                 "grid size-6 shrink-0 place-items-center rounded-full border transition-colors",
-                                active ? "bg-primary text-primary-foreground clay-sm" : "border-border",
+                                active ? "bg-primary text-primary-foreground shadow-subtle" : "border-border",
                               )}
                             >
                               {active && <Check className="size-4" />}
@@ -273,7 +273,7 @@ export function OnboardingWizard({ me }: { me: Me | null }) {
 function WelcomeStep() {
   return (
     <div className="text-center">
-      <ClayIcon icon={Trophy} tone="sunset" size="xl" className="mx-auto mb-5" />
+      <IconTile icon={Trophy} tone="accent" size="lg" className="mx-auto mb-5" />
       <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">Let&apos;s find your level</h1>
       <p className="mx-auto mt-3 max-w-md text-muted-foreground">
         A few quick, relatable questions about your game — no jargon. We&apos;ll estimate your skill rating so
@@ -516,10 +516,10 @@ function Chip({ active, onClick, children }: { active: boolean; onClick: () => v
       onClick={onClick}
       aria-pressed={active}
       className={cn(
-        "rounded-full px-4 py-1.5 text-sm font-semibold clay-pressable",
+        "rounded-full px-4 py-1.5 text-sm font-semibold press",
         active
-          ? "bg-primary text-primary-foreground clay-sm"
-          : "bg-secondary/60 text-muted-foreground clay-inset hover:text-foreground",
+          ? "bg-primary text-primary-foreground shadow-subtle"
+          : "bg-secondary/60 text-muted-foreground hover:text-foreground",
       )}
     >
       {children}

@@ -15,7 +15,7 @@ import {
   CheckCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ClayIcon, type ClayTone } from "@/components/ui/clay-icon";
+import { IconTile, type TileTone } from "@/components/ui/icon-tile";
 import { cn } from "@/lib/utils";
 import { useNotifications, useMarkNotificationsRead } from "@/hooks/use-notifications";
 import type { NotificationItem } from "@/types/notification";
@@ -31,14 +31,15 @@ const ICONS: Record<string, LucideIcon> = {
   SYSTEM: Info,
 };
 
-const TONES: Record<string, ClayTone> = {
-  MESSAGE: "cyan",
-  GAME_INVITE: "coral",
-  FRIEND_REQUEST: "violet",
-  CHECKIN: "sky",
-  TOURNAMENT: "sunset",
-  WEATHER: "peach",
-  SYSTEM: "violet",
+const TONES: Record<string, TileTone> = {
+  // Handoff: match reminders use the accent tone, level-ups use dark ink.
+  GAME_INVITE: "accent",
+  TOURNAMENT: "dark",
+  MESSAGE: "gray",
+  FRIEND_REQUEST: "gray",
+  CHECKIN: "gray",
+  WEATHER: "gray",
+  SYSTEM: "gray",
 };
 
 /** Resolve where a notification should take the user when clicked. */
@@ -116,7 +117,7 @@ export function NotificationBell() {
         <div
           role="dialog"
           aria-label="Notifications"
-          className="absolute right-0 z-50 mt-2 w-80 origin-top-right overflow-hidden rounded-3xl bg-card clay shadow-lg animate-in fade-in-0 zoom-in-95 sm:w-96"
+          className="absolute right-0 z-50 mt-2 w-80 origin-top-right overflow-hidden rounded-3xl bg-card shadow-card shadow-lg animate-in fade-in-0 zoom-in-95 sm:w-96"
         >
           <div className="flex items-center justify-between border-b border-border px-4 py-3">
             <p className="text-sm font-semibold">Notifications</p>
@@ -152,7 +153,7 @@ export function NotificationBell() {
                           !n.readAt && "bg-primary/5",
                         )}
                       >
-                        <ClayIcon icon={Icon} tone={TONES[n.type] ?? "violet"} size="sm" className="mt-0.5" />
+                        <IconTile icon={Icon} tone={TONES[n.type] ?? "gray"} size="sm" className="mt-0.5" />
                         <span className="min-w-0 flex-1">
                           <span className="block text-sm font-medium leading-snug">{n.title}</span>
                           {n.body && (

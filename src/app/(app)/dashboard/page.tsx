@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { formatDistanceToNow } from "date-fns";
 import { ArrowRight, MapPin, Users, Sparkles, Bell, Activity, UserPen, type LucideIcon } from "lucide-react";
-import { ClayIcon, type ClayTone } from "@/components/ui/clay-icon";
+import { IconTile, type TileTone } from "@/components/ui/icon-tile";
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth/session";
 import { getFullUser, serializeMe } from "@/lib/services/user";
@@ -133,14 +133,14 @@ export default async function DashboardPage() {
         <QuickAction
           href="/map"
           icon={MapPin}
-          tone="sky"
+          tone="gray"
           title="Find a court"
           body="See courts near you with live busy levels and check-ins."
         />
         <QuickAction
           href="/matchmaking"
           icon={Users}
-          tone="violet"
+          tone="gray"
           title="Find players"
           body="Match with nearby players at your level and start a game."
         />
@@ -203,16 +203,16 @@ function QuickAction({
 }: {
   href: string;
   icon: LucideIcon;
-  tone: ClayTone;
+  tone: TileTone;
   title: string;
   body: string;
 }) {
   return (
     <Link
       href={href}
-      className="group flex items-start gap-4 rounded-3xl bg-card clay p-5 transition-transform hover:-translate-y-1"
+      className="group flex items-start gap-4 rounded-3xl bg-card shadow-card p-5 transition-transform hover:-translate-y-1"
     >
-      <ClayIcon icon={icon} tone={tone} size="md" />
+      <IconTile icon={icon} tone={tone} size="md" />
       <div className="flex-1">
         <p className="flex items-center gap-1 font-semibold">
           {title}

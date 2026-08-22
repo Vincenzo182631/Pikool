@@ -11,7 +11,7 @@ export function CourtCard({ court }: { court: CourtListItem }) {
   return (
     <Link
       href={`/courts/${court.id}`}
-      className="group flex flex-col overflow-hidden rounded-3xl bg-card clay transition-transform hover:-translate-y-0.5"
+      className="group flex flex-col overflow-hidden rounded-3xl bg-card shadow-card transition-transform hover:-translate-y-0.5"
     >
       <div className="relative h-32 w-full bg-secondary">
         {court.thumbnailUrl ? (

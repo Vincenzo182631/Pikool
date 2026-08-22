@@ -76,7 +76,7 @@ export default async function AdminReportsPage() {
             const usr = g.targetType === "USER" ? userMap.get(g.targetId) : null;
             const authorUsername = post?.author.profile?.username ?? null;
             return (
-              <div key={`${g.targetType}:${g.targetId}`} className="rounded-3xl bg-card clay p-4">
+              <div key={`${g.targetType}:${g.targetId}`} className="rounded-3xl bg-card shadow-card p-4">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="min-w-0 flex-1">
                     <div className="mb-1 flex flex-wrap items-center gap-2">

@@ -30,7 +30,7 @@ export function AvailablePlayerCard({ player }: { player: AvailablePlayer }) {
   }
 
   return (
-    <div className="flex items-center gap-3 rounded-3xl bg-card clay p-4">
+    <div className="flex items-center gap-3 rounded-3xl bg-card shadow-card p-4">
       <Link href={player.username ? `/players/${player.username}` : "#"} className="shrink-0">
         <Avatar src={player.avatarUrl} fallback={player.initials} size={48} />
       </Link>
@@ -70,7 +70,7 @@ export function AvailablePlayerCard({ player }: { player: AvailablePlayer }) {
             <Link href="#requests">Respond</Link>
           </Button>
         ) : (
-          <Button size="sm" variant="cta" onClick={onInvite} loading={invite.isPending}>
+          <Button size="sm" onClick={onInvite} loading={invite.isPending}>
             <Send /> Invite
           </Button>
         )}

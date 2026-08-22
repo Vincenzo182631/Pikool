@@ -39,7 +39,7 @@ export default async function AdminCourtEditPage({ params }: { params: Promise<{
       </Link>
       <h1 className="mb-1 text-2xl font-bold tracking-tight">Edit court</h1>
       <p className="mb-6 text-sm text-muted-foreground">{court.name}</p>
-      <div className="rounded-3xl bg-card clay p-5">
+      <div className="rounded-3xl bg-card shadow-card p-5">
         <CourtEditForm court={court} />
       </div>
     </div>

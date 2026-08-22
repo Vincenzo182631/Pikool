@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-/** Simple accessible progress bar. */
+/** Slim accent progress bar. */
 export function Progress({
   value,
   className,
@@ -15,10 +15,10 @@ export function Progress({
       aria-valuenow={clamped}
       aria-valuemin={0}
       aria-valuemax={100}
-      className={cn("h-3 w-full overflow-hidden rounded-full bg-secondary clay-inset", className)}
+      className={cn("h-1.5 w-full overflow-hidden rounded-full bg-ink/[0.08]", className)}
     >
       <div
-        className="h-full rounded-full bg-primary clay-sm transition-[width] duration-500"
+        className="h-full rounded-full bg-primary transition-[width] duration-500"
         style={{ width: `${clamped}%` }}
       />
     </div>

@@ -14,7 +14,7 @@ import { createCourtSchema, COURT_SURFACES, COURT_ENVIRONMENTS } from "@/lib/val
 import { cn } from "@/lib/utils";
 
 const selectClass =
-  "flex h-10 w-full rounded-2xl border border-border/60 bg-secondary/60 clay-inset px-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring";
+  "flex h-10 w-full rounded-2xl border border-border/60 bg-secondary/60 px-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring";
 
 const AMENITY_OPTIONS = ["Parking", "Restrooms", "Water", "Nets provided", "Seating", "Pro shop", "Coffee"];
 
@@ -173,10 +173,10 @@ export default function NewCourtPage() {
                         setAmenities((prev) => (active ? prev.filter((x) => x !== a) : [...prev, a]))
                       }
                       className={cn(
-                        "rounded-full px-3 py-1.5 text-sm font-semibold clay-pressable",
+                        "rounded-full px-3 py-1.5 text-sm font-semibold press",
                         active
-                          ? "bg-primary text-primary-foreground clay-sm"
-                          : "bg-secondary/60 text-muted-foreground clay-inset hover:text-foreground",
+                          ? "bg-primary text-primary-foreground shadow-subtle"
+                          : "bg-secondary/60 text-muted-foreground hover:text-foreground",
                       )}
                     >
                       {a}

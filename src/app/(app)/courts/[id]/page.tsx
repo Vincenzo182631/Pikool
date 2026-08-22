@@ -98,7 +98,7 @@ export default async function CourtDetailPage({
         {/* Left: live activity + amenities */}
         <div className="space-y-6 lg:col-span-2">
           {/* Live now */}
-          <section className="rounded-3xl bg-card clay p-5">
+          <section className="rounded-3xl bg-card shadow-card p-5">
             <div className="mb-3 flex items-center justify-between">
               <h2 className="flex items-center gap-2 font-semibold">
                 <Users className="size-4 text-muted-foreground" /> Playing now
@@ -131,14 +131,14 @@ export default async function CourtDetailPage({
           </section>
 
           {/* Reviews */}
-          <section className="rounded-3xl bg-card clay p-5">
+          <section className="rounded-3xl bg-card shadow-card p-5">
             <CourtReviews courtId={court.id} reviews={court.reviews} canReview={Boolean(user)} />
           </section>
         </div>
 
         {/* Right: amenities + details */}
         <aside className="space-y-6">
-          <section className="rounded-3xl bg-card clay p-5">
+          <section className="rounded-3xl bg-card shadow-card p-5">
             <h2 className="mb-3 font-semibold">Amenities</h2>
             {court.amenities.length === 0 ? (
               <p className="text-sm text-muted-foreground">No amenities listed.</p>
@@ -153,7 +153,7 @@ export default async function CourtDetailPage({
             )}
           </section>
 
-          <section className="rounded-3xl bg-card clay p-5 text-sm">
+          <section className="rounded-3xl bg-card shadow-card p-5 text-sm">
             <h2 className="mb-3 font-semibold">Details</h2>
             <dl className="space-y-2">
               <Detail label="Surface" value={surface} />
@@ -166,7 +166,7 @@ export default async function CourtDetailPage({
           </section>
 
           {(court.phone || court.website) && (
-            <section className="rounded-3xl bg-card clay p-5 text-sm">
+            <section className="rounded-3xl bg-card shadow-card p-5 text-sm">
               <h2 className="mb-3 font-semibold">Contact</h2>
               <div className="space-y-2">
                 {court.phone && (

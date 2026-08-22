@@ -3,106 +3,111 @@
 /* Class-based dark mode (next-themes toggles .dark on <html>). */
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* ============================================================
+   Design tokens — pickleball editorial system (design handoff).
+   Lime accent on a warm off-white canvas, near-black ink,
+   Fraunces italic display + DM Sans UI.
+   ============================================================ */
 :root {
-  /* Chunky, tactile radius — the clay look leans on generous rounding. */
-  --radius: 1.5rem;
+  --radius: 1.25rem; /* 20px — large card default */
 
-  /* Brand — royal purple → electric violet, energetic & premium. */
-  --brand-50: #f1ecff;
-  --brand-100: #e4d9ff;
-  --brand-300: #b79bff;
-  --brand-500: #6c3dff;
-  --brand-600: #5b28e0;
-  --brand-700: #3b1e8f;
+  /* Brand accent — lime */
+  --accent-500: #d4f53c;
+  --accent-deep: #b8da1e;
 
-  /* Sport palette — used for gradients, CTAs and accents. */
-  --indigo: #3b1e8f;
-  --royal: #6c3dff;
-  --violet: #8e5cff;
-  --coral: #ff6f91;
-  --peach: #ffb199;
-  --sunset: #ffc66d;
-  --cyan: #6ef3ff;
-  --lime: #9be564;
-  --tennis: #d9ff4a;
+  /* Editorial neutrals */
+  --ink: #0b0f10;
+  --ink-2: #2a2f31;
 
-  /* Brand gradients. */
-  --grad-primary: linear-gradient(135deg, #6c3dff 0%, #8e5cff 100%);
-  --grad-cta: linear-gradient(135deg, #ff6f91 0%, #ffc66d 100%);
-  --grad-text: linear-gradient(120deg, #6c3dff 0%, #8e5cff 45%, #ff6f91 100%);
-
-  /* Light theme — bright, airy, faintly violet so puffy cards lift off. */
-  --background: #f4f1fb;
-  --foreground: #171227;
+  /* Semantic surface tokens */
+  --background: #f2f3ee;
+  --background-2: #e9ece1;
+  --foreground: #0b0f10;
   --card: #ffffff;
-  --card-foreground: #171227;
+  --card-foreground: #0b0f10;
   --popover: #ffffff;
-  --popover-foreground: #171227;
-  --primary: #6c3dff;
-  --primary-foreground: #ffffff;
-  --secondary: #efeafb;
-  --secondary-foreground: #241b3d;
-  --muted: #efeafb;
-  --muted-foreground: #6b6484;
-  --accent: #efe7ff;
-  --accent-foreground: #5b28e0;
-  --destructive: #f0446a;
+  --popover-foreground: #0b0f10;
+  --primary: #d4f53c;
+  --primary-foreground: #0b0f10;
+  --secondary: #e9ece1;
+  --secondary-foreground: #0b0f10;
+  --muted: #e9ece1;
+  --muted-foreground: #7a7f82;
+  --accent: rgba(212, 245, 60, 0.18);
+  --accent-foreground: #0b0f10;
+  --destructive: #c43d3d;
   --destructive-foreground: #ffffff;
-  --border: #e6dff5;
-  --input: #e6dff5;
-  --ring: #6c3dff;
+  --border: rgba(11, 15, 16, 0.08);
+  --input: rgba(11, 15, 16, 0.12);
+  --ring: #b8da1e;
 
-  /* Energetic multi-layer background wash (kept soft for readability). */
+  /* Accents used inline */
+  --star: #f2b900;
+  --tile-accent: linear-gradient(150deg, #cde2a3 0%, #d4f53c 100%);
+  --tile-neutral: linear-gradient(150deg, #e5e9e1 0%, #f5f7f0 100%);
+
+  /* Ambient background wash */
   --app-bg:
-    radial-gradient(1100px 640px at 12% -12%, #ece0ff 0%, transparent 55%),
-    radial-gradient(1000px 680px at 112% 6%, #ffe2ea 0%, transparent 52%),
-    radial-gradient(950px 720px at 50% 118%, #e2ecff 0%, transparent 55%),
-    #f4f1fb;
+    radial-gradient(1200px 800px at 80% -10%, rgba(212, 245, 60, 0.1), transparent 60%),
+    radial-gradient(1000px 700px at -10% 90%, rgba(212, 245, 60, 0.08), transparent 60%),
+    #f2f3ee;
 
-  /* Claymorphism shadow ingredients — tinted with deep indigo. */
-  --clay-hi: rgba(255, 255, 255, 0.9);
-  --clay-lo: rgba(59, 30, 143, 0.12);
-  --clay-drop: rgba(59, 30, 143, 0.2);
+  /* Elevation */
+  --shadow-cta: 0 6px 18px rgba(184, 218, 30, 0.35), inset 0 -2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-cta-pop: 0 8px 24px rgba(184, 218, 30, 0.5), 0 0 0 4px rgba(255, 255, 255, 0.9);
+  --shadow-icon: 0 2px 8px rgba(11, 15, 16, 0.08), 0 0 0 1px rgba(11, 15, 16, 0.06);
+  --shadow-card: 0 4px 14px rgba(11, 15, 16, 0.05), 0 0 0 1px rgba(11, 15, 16, 0.04);
+  --shadow-soft: 0 2px 10px rgba(11, 15, 16, 0.05);
+  --shadow-subtle: 0 2px 8px rgba(11, 15, 16, 0.04);
+  --shadow-hero: 0 12px 30px rgba(11, 15, 16, 0.15);
+  --shadow-nav: 0 8px 24px rgba(11, 15, 16, 0.12), 0 0 0 1px rgba(11, 15, 16, 0.05);
+  --shadow-pill-dark: 0 6px 16px rgba(11, 15, 16, 0.25);
 }
 
 .dark {
-  --background: #0c0918;
-  --foreground: #efeafb;
-  --card: #171226;
-  --card-foreground: #efeafb;
-  --popover: #171226;
-  --popover-foreground: #efeafb;
-  --primary: #8e5cff;
-  --primary-foreground: #ffffff;
-  --secondary: #241b3d;
-  --secondary-foreground: #efeafb;
-  --muted: #241b3d;
-  --muted-foreground: #a99fc4;
-  --accent: #271b45;
-  --accent-foreground: #c9b8ff;
-  --destructive: #ff6f8a;
-  --destructive-foreground: #1a0510;
-  --border: #2e2450;
-  --input: #2e2450;
-  --ring: #8e5cff;
+  --ink: #f5f7f0;
+  --ink-2: #c5c9c0;
 
-  --grad-primary: linear-gradient(135deg, #6c3dff 0%, #8e5cff 100%);
-  --grad-cta: linear-gradient(135deg, #ff6f91 0%, #ffb15f 100%);
+  --background: #0e100d;
+  --background-2: #161a14;
+  --foreground: #f5f7f0;
+  --card: #1a1f1a;
+  --card-foreground: #f5f7f0;
+  --popover: #1a1f1a;
+  --popover-foreground: #f5f7f0;
+  --primary: #d4f53c;
+  --primary-foreground: #0b0f10;
+  --secondary: #161a14;
+  --secondary-foreground: #f5f7f0;
+  --muted: #161a14;
+  --muted-foreground: #8a8f82;
+  --accent: rgba(212, 245, 60, 0.14);
+  --accent-foreground: #d4f53c;
+  --destructive: #e07070;
+  --destructive-foreground: #1a0605;
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.14);
+
+  --tile-neutral: linear-gradient(150deg, #222922 0%, #161a14 100%);
 
   --app-bg:
-    radial-gradient(1100px 640px at 12% -12%, #1e1147 0%, transparent 55%),
-    radial-gradient(1000px 680px at 112% 6%, #341236 0%, transparent 52%),
-    radial-gradient(950px 720px at 50% 118%, #101a44 0%, transparent 55%),
-    #0c0918;
+    radial-gradient(1200px 800px at 80% -10%, rgba(212, 245, 60, 0.07), transparent 60%),
+    radial-gradient(1000px 700px at -10% 90%, rgba(212, 245, 60, 0.05), transparent 60%),
+    #0e100d;
 
-  --clay-hi: rgba(255, 255, 255, 0.07);
-  --clay-lo: rgba(0, 0, 0, 0.5);
-  --clay-drop: rgba(0, 0, 0, 0.62);
+  --shadow-icon: 0 2px 8px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  --shadow-card: 0 4px 14px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  --shadow-soft: 0 2px 10px rgba(0, 0, 0, 0.4);
+  --shadow-subtle: 0 2px 8px rgba(0, 0, 0, 0.35);
+  --shadow-hero: 0 12px 30px rgba(0, 0, 0, 0.6);
+  --shadow-nav: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  --shadow-cta-pop: 0 8px 24px rgba(184, 218, 30, 0.4), 0 0 0 4px rgba(26, 31, 26, 0.9);
 }
 
-/* Map CSS variables to Tailwind color/radius utilities. */
+/* Map tokens to Tailwind utilities. */
 @theme inline {
   --color-background: var(--background);
+  --color-background-2: var(--background-2);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
@@ -121,28 +126,17 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-brand-50: var(--brand-50);
-  --color-brand-100: var(--brand-100);
-  --color-brand-300: var(--brand-300);
-  --color-brand-500: var(--brand-500);
-  --color-brand-600: var(--brand-600);
-  --color-brand-700: var(--brand-700);
-  --color-indigo: var(--indigo);
-  --color-royal: var(--royal);
-  --color-violet: var(--violet);
-  --color-coral: var(--coral);
-  --color-peach: var(--peach);
-  --color-sunset: var(--sunset);
-  --color-cyan: var(--cyan);
-  --color-lime: var(--lime);
-  --color-tennis: var(--tennis);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-star: var(--star);
 
   --radius-lg: var(--radius);
-  --radius-md: calc(var(--radius) - 0.5rem);
-  --radius-sm: calc(var(--radius) - 0.85rem);
-  --radius-xl: calc(var(--radius) + 0.5rem);
+  --radius-md: calc(var(--radius) - 0.25rem);
+  --radius-sm: calc(var(--radius) - 0.5rem);
+  --radius-xl: calc(var(--radius) + 0.25rem);
 
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-dm-sans), "DM Sans", "Inter", -apple-system, system-ui, sans-serif;
+  --font-serif: var(--font-fraunces), "Fraunces", "Instrument Serif", Georgia, serif;
 }
 
 @layer base {
@@ -154,12 +148,11 @@
     background-color: var(--background);
     color: var(--foreground);
     min-height: 100dvh;
-    font-feature-settings: "cv11", "ss01";
     -webkit-font-smoothing: antialiased;
   }
   ::selection {
-    background-color: var(--violet);
-    color: #ffffff;
+    background-color: var(--accent-500);
+    color: #0b0f10;
   }
 }
 
@@ -173,74 +166,164 @@
   }
 }
 
-/* Utilities */
-.glass {
-  background-color: color-mix(in srgb, var(--card) 72%, transparent);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+/* ============================================================
+   Utilities
+   ============================================================ */
+
+/**
+ * Display type. The brand voice is Fraunces *italic* — this utility bundles
+ * family + style so a title can never accidentally render upright.
+ */
+.font-display {
+  /* Reference the next/font variable directly — `@theme inline` tokens are
+     substituted into utilities and are not emitted as custom properties. */
+  font-family: var(--font-fraunces), "Fraunces", "Instrument Serif", Georgia, serif;
+  font-style: italic;
+  letter-spacing: -0.02em;
 }
 
-/* ---------- Claymorphism ----------
-   Raised clay = an outer drop + an inner top highlight + inner bottom shadow,
-   giving surfaces an inflated, soft-plastic look. Carved clay inverts it. */
-.clay {
-  box-shadow:
-    0 12px 24px -8px var(--clay-drop),
-    inset 0 6px 12px var(--clay-hi),
-    inset 0 -8px 14px var(--clay-lo);
+/* Elevation helpers mapped to the handoff's shadow table. */
+.shadow-card {
+  box-shadow: var(--shadow-card);
 }
-.clay-sm {
-  box-shadow:
-    0 6px 14px -6px var(--clay-drop),
-    inset 0 3px 6px var(--clay-hi),
-    inset 0 -4px 8px var(--clay-lo);
+.shadow-soft {
+  box-shadow: var(--shadow-soft);
 }
-.clay-inset {
-  box-shadow:
-    inset 0 3px 7px var(--clay-lo),
-    inset 0 -2px 4px var(--clay-hi);
+.shadow-subtle {
+  box-shadow: var(--shadow-subtle);
 }
-.clay-pressable {
+.shadow-hero {
+  box-shadow: var(--shadow-hero);
+}
+.shadow-icon {
+  box-shadow: var(--shadow-icon);
+}
+.shadow-cta {
+  box-shadow: var(--shadow-cta);
+}
+.shadow-cta-pop {
+  box-shadow: var(--shadow-cta-pop);
+}
+.shadow-nav {
+  box-shadow: var(--shadow-nav);
+}
+.shadow-pill-dark {
+  box-shadow: var(--shadow-pill-dark);
+}
+
+/* Gradient stat tiles (Home status card, Matches date tile). */
+.tile-accent {
+  background: var(--tile-accent);
+}
+.tile-neutral {
+  background: var(--tile-neutral);
+}
+
+/* Frosted floating bottom nav. */
+.nav-blur {
+  background-color: color-mix(in srgb, var(--card) 85%, transparent);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+/* Dark scrim over editorial photography. */
+.scrim-b {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.6) 100%);
+}
+.scrim-tb {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.25) 0%,
+    rgba(0, 0, 0, 0) 45%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+}
+.scrim-hero {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 45%, rgba(0, 0, 0, 0.75) 100%);
+}
+
+/* Press feedback — 120ms scale, no bounce (motion table). */
+.press {
   transition:
     transform 0.12s ease,
-    box-shadow 0.12s ease,
-    background-color 0.12s ease;
+    background-color 0.18s ease,
+    box-shadow 0.18s ease,
+    opacity 0.18s ease;
 }
-.clay-pressable:active {
-  transform: translateY(2px) scale(0.99);
-  box-shadow:
-    0 4px 10px -8px var(--clay-drop),
-    inset 0 5px 12px var(--clay-lo);
+.press:active {
+  transform: scale(0.97);
 }
-
-/* ---------- Brand gradients ---------- */
-.grad-primary {
-  background-image: var(--grad-primary);
+.press-icon:active {
+  transform: scale(0.93);
 }
-.grad-cta {
-  background-image: var(--grad-cta);
-}
-/* Vibrant gradient text for hero headings. */
-.text-gradient {
-  background-image: var(--grad-text);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+.press-chip:active {
+  transform: scale(0.96);
 }
 
-/* Soft floating decorative blobs (behind hero content). */
-.blob {
-  position: absolute;
-  border-radius: 9999px;
-  filter: blur(28px);
-  opacity: 0.5;
-  pointer-events: none;
-  z-index: 0;
+/* Hide scrollbars on horizontal rails. */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
-@keyframes float-slow {
-  0%, 100% { transform: translateY(0) translateX(0) scale(1); }
-  50% { transform: translateY(-18px) translateX(10px) scale(1.05); }
+.no-scrollbar::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
-.blob-float {
-  animation: float-slow 9s ease-in-out infinite;
+
+/* Staggered list entry (court list). */
+@keyframes slidein {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-slidein {
+  animation: slidein 0.4s ease both;
+}
+
+/* Booking success check pop. */
+@keyframes pop-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.animate-pop-in {
+  animation: pop-in 0.5s ease both;
+}
+
+/* Filter drawer. */
+@keyframes sheet-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+.animate-sheet-up {
+  animation: sheet-up 0.25s ease both;
+}
+@keyframes backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.animate-backdrop-in {
+  animation: backdrop-in 0.18s ease both;
 }

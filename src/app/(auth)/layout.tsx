@@ -13,7 +13,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
       </div>
       <header className="flex items-center justify-between px-5 py-5">
         <Link href="/" className="flex items-center gap-2">
-          <span className="inline-flex size-8 items-center justify-center rounded-2xl grad-primary text-white clay-sm">
+          <span className="inline-flex size-8 items-center justify-center rounded-2xl bg-primary text-white shadow-subtle">
             <span className="text-sm font-black">P</span>
           </span>
           <span className="text-lg font-bold tracking-tight">{APP_NAME}</span>
